@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Estudio – IIC2613 Inteligencia Artificial</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #1a1d2e;
+    --bg3: #242740;
+    --accent1: #6c63ff;
+    --accent2: #00c9a7;
+    --accent3: #ff6584;
+    --accent4: #f5a623;
+    --text: #e8eaf6;
+    --text2: #9fa8da;
+    --code-bg: #1e1e2e;
+    --border: #2e3155;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.7; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; width: 260px; height: 100vh;
+    background: var(--bg2); border-right: 1px solid var(--border);
+    overflow-y: auto; padding: 20px 0; z-index: 100;
+  }
+  nav h2 { color: var(--accent1); font-size: 13px; text-transform: uppercase; letter-spacing: 2px; padding: 0 20px 10px; }
+  nav a {
+    display: block; padding: 7px 20px; color: var(--text2); text-decoration: none;
+    font-size: 13px; border-left: 3px solid transparent; transition: all .2s;
+  }
+  nav a:hover, nav a.active { color: var(--text); border-left-color: var(--accent1); background: rgba(108,99,255,.1); }
+  nav .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent4); padding: 14px 20px 4px; }
+
+  /* MAIN */
+  main { margin-left: 260px; padding: 40px 48px; max-width: 1100px; }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #1a1d2e 0%, #242740 100%);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '🤖'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+    font-size: 80px; opacity: .12;
+  }
+  .hero h1 { font-size: 28px; color: var(--accent1); margin-bottom: 8px; }
+  .hero p { color: var(--text2); font-size: 14px; }
+  .hero .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge {
+    background: rgba(108,99,255,.2); border: 1px solid var(--accent1);
+    color: var(--accent1); padding: 4px 12px; border-radius: 20px; font-size: 12px;
+  }
+  .badge.green { background: rgba(0,201,167,.15); border-color: var(--accent2); color: var(--accent2); }
+  .badge.red   { background: rgba(255,101,132,.15); border-color: var(--accent3); color: var(--accent3); }
+  .badge.yellow{ background: rgba(245,166,35,.15); border-color: var(--accent4); color: var(--accent4); }
+
+  /* TOC CARD */
+  .toc-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px; margin-bottom: 40px;
+  }
+  .toc-card h2 { font-size: 16px; color: var(--accent4); margin-bottom: 16px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .toc-item {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 16px; text-decoration: none; color: var(--text2);
+    display: flex; align-items: center; gap: 10px; transition: all .2s;
+  }
+  .toc-item:hover { background: rgba(108,99,255,.15); color: var(--text); border-color: var(--accent1); }
+  .toc-item .num { color: var(--accent1); font-weight: bold; font-size: 13px; min-width: 24px; }
+  .toc-item .lbl { font-size: 13px; }
+
+  /* SECTIONS */
+  section { margin-bottom: 52px; scroll-margin-top: 80px; }
+  .section-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 44px; height: 44px; border-radius: 10px; display: flex;
+    align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .s1 { background: rgba(108,99,255,.2); }
+  .s2 { background: rgba(0,201,167,.2); }
+  .s3 { background: rgba(255,101,132,.2); }
+  .s4 { background: rgba(245,166,35,.2); }
+  .s5 { background: rgba(108,99,255,.2); }
+  .s6 { background: rgba(0,201,167,.2); }
+  .s7 { background: rgba(255,101,132,.2); }
+
+  .section-header h2 { font-size: 22px; }
+  .section-header .meta { font-size: 12px; color: var(--text2); }
+
+  /* CARDS */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; margin-bottom: 18px;
+  }
+  .card h3 { font-size: 16px; color: var(--accent2); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .card h4 { font-size: 14px; color: var(--accent4); margin: 14px 0 8px; }
+  .card p { color: var(--text2); margin-bottom: 10px; }
+  .card ul { padding-left: 20px; color: var(--text2); }
+  .card ul li { margin-bottom: 6px; }
+  .card ul li strong { color: var(--text); }
+
+  /* 2-col grid */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  @media(max-width: 750px) { .two-col { grid-template-columns: 1fr; } main { margin-left: 0; padding: 20px; } nav { display: none; } }
+
+  /* CODE */
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; overflow-x: auto; font-size: 13px; margin: 12px 0; color: #a6e3a1;
+  }
+  code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: #cba6f7; }
+
+  /* FORMULA */
+  .formula {
+    background: var(--code-bg); border-left: 3px solid var(--accent1);
+    border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 12px 0;
+    font-family: 'Courier New', monospace; font-size: 14px; color: #89dceb;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    background: rgba(108,99,255,.12); border: 1px solid rgba(108,99,255,.4);
+    border-radius: 8px; padding: 14px 18px; margin: 12px 0;
+  }
+  .highlight.green { background: rgba(0,201,167,.1); border-color: rgba(0,201,167,.4); }
+  .highlight.yellow { background: rgba(245,166,35,.1); border-color: rgba(245,166,35,.4); }
+  .highlight.red { background: rgba(255,101,132,.1); border-color: rgba(255,101,132,.4); }
+  .highlight p { color: var(--text); margin: 0; }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--bg3); color: var(--accent1); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text2); }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* COMPARE TABLE */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+  .compare-col { background: var(--bg3); border-radius: 8px; padding: 16px; border: 1px solid var(--border); }
+  .compare-col h4 { color: var(--accent2); margin-bottom: 10px; font-size: 14px; }
+  .compare-col ul { padding-left: 16px; color: var(--text2); }
+  .compare-col ul li { margin-bottom: 5px; font-size: 13px; }
+
+  /* CHIP */
+  .chip { display: inline-block; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 12px; color: var(--text2); margin: 2px; }
+
+  /* DIAGRAM-LIKE */
+  .flow {
+    display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin: 14px 0;
+    background: var(--bg3); border-radius: 10px; padding: 14px 18px;
+  }
+  .flow-step {
+    background: var(--bg2); border: 1px solid var(--accent1); border-radius: 6px;
+    padding: 8px 14px; font-size: 13px; color: var(--text); text-align: center;
+  }
+  .flow-arrow { color: var(--accent1); font-size: 20px; padding: 0 8px; }
+
+  /* ALGORITHM BOX */
+  .algo {
+    background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 22px; margin: 12px 0;
+  }
+  .algo .algo-title { color: var(--accent4); font-weight: bold; font-size: 13px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  .algo ol { padding-left: 22px; }
+  .algo ol li { color: var(--text2); margin-bottom: 5px; font-size: 13px; }
+  .algo ol li strong { color: var(--text); }
+
+  /* SCROLL TOP */
+  #scroll-top {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--accent1); color: white; border: none; border-radius: 50%;
+    width: 40px; height: 40px; cursor: pointer; font-size: 18px; z-index: 200;
+    display: flex; align-items: center; justify-content: center; opacity: .8;
+    transition: opacity .2s;
+  }
+  #scroll-top:hover { opacity: 1; }
+
+  /* PROGRESS BAR */
+  #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent1); z-index: 999; transition: width .1s; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <h2>IIC2613 · IA</h2>
+  <div class="section-label">Módulo ML Avanzado</div>
+  <a href="#al">Active Learning</a>
+  <a href="#rl">Aprendizaje Reforzado</a>
+  <div class="section-label">Deep Learning</div>
+  <a href="#dl">Introducción a DL</a>
+  <a href="#train">Entrenamiento de RR.NN.</a>
+  <a href="#cnn">Redes Convolucionales</a>
+  <div class="section-label">Razonamiento Lógico</div>
+  <a href="#rd1">Razonamiento Deductivo</a>
+  <a href="#asp">Prog. en Lógica (ASP)</a>
+  <a href="#clingo">Clingo: Programas Simples</a>
+  <a href="#modelo">Modelos, Restricciones y Disyunciones</a>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Guía de Estudio — Inteligencia Artificial</h1>
+  <p>IIC2613 · Pontificia Universidad Católica de Chile · Depto. Ciencia de la Computación</p>
+  <div class="badges">
+    <span class="badge">Active Learning</span>
+    <span class="badge">Aprendizaje Reforzado</span>
+    <span class="badge green">Deep Learning</span>
+    <span class="badge green">CNNs</span>
+    <span class="badge red">Razonamiento Deductivo</span>
+    <span class="badge yellow">ASP / Clingo</span>
+    <span class="badge yellow">9 módulos</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc-card">
+  <h2>📋 Índice de Contenidos</h2>
+  <div class="toc-grid">
+    <a href="#al" class="toc-item"><span class="num">01</span><span class="lbl">Active Learning</span></a>
+    <a href="#rl" class="toc-item"><span class="num">02</span><span class="lbl">Aprendizaje Reforzado (RL)</span></a>
+    <a href="#dl" class="toc-item"><span class="num">03</span><span class="lbl">Introducción a Deep Learning</span></a>
+    <a href="#train" class="toc-item"><span class="num">04</span><span class="lbl">Entrenamiento de Redes Neuronales</span></a>
+    <a href="#cnn" class="toc-item"><span class="num">05</span><span class="lbl">Redes Convolucionales (CNN)</span></a>
+    <a href="#rd1" class="toc-item"><span class="num">06</span><span class="lbl">Razonamiento Deductivo</span></a>
+    <a href="#asp" class="toc-item"><span class="num">07</span><span class="lbl">Programación en Lógica (ASP)</span></a>
+    <a href="#clingo" class="toc-item"><span class="num">08</span><span class="lbl">Clingo: Programas Simples</span></a>
+    <a href="#modelo" class="toc-item"><span class="num">09</span><span class="lbl">Modelos, Disyunciones y Restricciones</span></a>
+  </div>
+</div>
+
+<!-- ====================== SECCIÓN 1: ACTIVE LEARNING ====================== -->
+<section id="al">
+  <div class="section-header">
+    <div class="section-icon s1">🎯</div>
+    <div>
+      <h2>Active Learning (Aprendizaje Activo)</h2>
+      <div class="meta">s6_c1 · Denis Parra · Dpto. Ciencia de la Computación</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 Motivación y Problema del Etiquetado</h3>
+    <p>El aprendizaje supervisado tradicional requiere grandes cantidades de datos etiquetados. Sin embargo, etiquetar es <strong>costoso, lento y requiere expertos</strong>:</p>
+    <ul>
+      <li>Imágenes médicas → diagnóstico por especialistas</li>
+      <li>Textos legales → abogados especializados</li>
+      <li>Datos satelitales → analistas geoespaciales</li>
+    </ul>
+    <div class="highlight green">
+      <p><strong>Pregunta central:</strong> ¿Podemos aprender bien con <em>menos</em> etiquetas? Active Learning responde: sí, eligiendo estratégicamente qué ejemplos etiquetar.</p>
+    </div>
+    <h4>Notación formal</h4>
+    <ul>
+      <li><code>U = {x₁, x₂, ..., xₙ}</code> — Pool no etiquetado</li>
+      <li><code>L = {(xᵢ, yᵢ)}</code> — Pool etiquetado</li>
+      <li>Objetivo: maximizar performance con <code>|L|</code> mínimo</li>
+    </ul>
+    <div class="highlight yellow">
+      <p><strong>Ejemplo real:</strong> Clasificación de biopsias histológicas. Con muestreo aleatorio: 72% accuracy / 200 etiquetas. Con Active Learning: <strong>89% accuracy</strong> con el mismo presupuesto.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="compare-col">
+      <h4>Aprendizaje Pasivo</h4>
+      <ul>
+        <li>Dataset etiquetado antes del entrenamiento</li>
+        <li>El modelo NO influye en la selección de datos</li>
+        <li>Muchos ejemplos redundantes o fáciles</li>
+        <li>Costo fijo: etiquetar todo el dataset</li>
+      </ul>
+    </div>
+    <div class="compare-col">
+      <h4>Active Learning</h4>
+      <ul>
+        <li>Etiquetado iterativo guiado por el modelo</li>
+        <li>El modelo elige qué ejemplos etiquetar</li>
+        <li>Se enfoca en ejemplos informativos</li>
+        <li>Misma performance con muchas menos etiquetas</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 El Ciclo de Active Learning</h3>
+    <div class="algo">
+      <div class="algo-title">Algoritmo — Ciclo Iterativo</div>
+      <ol>
+        <li><strong>Inicialización:</strong> Entrenar modelo inicial hθ con pool L pequeño</li>
+        <li><strong>Selección (Query Strategy):</strong> Seleccionar x* = φ(U, hθ) del pool no etiquetado</li>
+        <li><strong>Oráculo:</strong> Un experto etiqueta x* → obtener (x*, y*)</li>
+        <li><strong>Actualización:</strong> L ← L ∪ {(x*, y*)}, U ← U \ {x*}</li>
+        <li><strong>Re-entrenamiento:</strong> Repetir hasta alcanzar la performance deseada o agotar presupuesto B</li>
+      </ol>
+    </div>
+    <h4>El Oráculo</h4>
+    <ul>
+      <li>Es la fuente de etiquetas: médico, abogado, anotador humano</li>
+      <li>Supuesto estándar: oráculo perfecto (siempre correcto)</li>
+      <li>Extensiones: oráculo imperfecto, múltiples oráculos, costo variable c(x*)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📊 Escenarios de Active Learning</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Escenario</th><th>Descripción</th><th>Aplicación típica</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Membership Query Synthesis</strong></td><td>El modelo genera ejemplos sintéticos para consultar</td><td>Riesgo: ejemplos poco realistas</td></tr>
+          <tr><td><strong>Stream-Based Selective Sampling</strong></td><td>Datos llegan en flujo; modelo decide si consultar</td><td>Sensores IoT, feeds de redes sociales</td></tr>
+          <tr><td><strong>Pool-Based Active Learning</strong></td><td>Existe un pool U disponible; modelo selecciona el mejor candidato</td><td>Más común — enfoque del curso</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Estrategias de Consulta (Query Strategies)</h3>
+    <p>La query strategy φ define: <code>x* = argmax{x ∈ U} informativeness(x, hθ)</code></p>
+
+    <h4>A. Basadas en Incertidumbre</h4>
+    <div class="two-col">
+      <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid var(--border)">
+        <p style="color:var(--accent2);font-weight:bold;margin-bottom:8px">Uncertainty Sampling</p>
+        <div class="formula">x* = argmin_{x ∈ U} max_{y} P(y|x,θ)</div>
+        <p style="color:var(--text2);font-size:13px">Selecciona el ejemplo donde la clase más probable tiene menor probabilidad. Simple y eficiente, puede sobre-samplear regiones ruidosas.</p>
+      </div>
+      <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid var(--border)">
+        <p style="color:var(--accent2);font-weight:bold;margin-bottom:8px">Margin Sampling</p>
+        <div class="formula">x* = argmin_{x} [P(y₁*|x,θ) - P(y₂*|x,θ)]</div>
+        <p style="color:var(--text2);font-size:13px">Considera las dos clases más probables. Más informativo que Uncertainty en multiclase. Equivalente en binario.</p>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid var(--border);margin-top:10px">
+      <p style="color:var(--accent2);font-weight:bold;margin-bottom:8px">Entropy Sampling</p>
+      <div class="formula">x* = argmax_{x} H[y|x,θ] = -∑_y P(y|x,θ) log P(y|x,θ)</div>
+      <p style="color:var(--text2);font-size:13px">Usa toda la distribución de probabilidad. Fundamentado en teoría de la información. Captura mejor la incertidumbre global en multiclase.</p>
+    </div>
+
+    <h4>B. Query by Committee (QBC)</h4>
+    <ul>
+      <li>Se entrena un comité de C modelos {h₁, ..., hc} sobre versiones de L</li>
+      <li>Diversidad mediante: bootstrap, hiperparámetros distintos, modelos heterogéneos</li>
+      <li>Selección por <strong>vote entropy</strong>: <code>x* = argmax -∑_y (V(y)/C)·log(V(y)/C)</code></li>
+      <li>Captura incertidumbre epistémica (varianza del modelo), C veces más costoso</li>
+    </ul>
+
+    <h4>C. Expected Gradient Length (EGL)</h4>
+    <div class="formula">x* = argmax_{x} ∑_y P(y|x,θ) · ‖∇θ L(hθ, (x,y))‖</div>
+    <p style="color:var(--text2)">Costoso: requiere un paso de gradiente por cada candidato.</p>
+
+    <h4>D. Core-Set (Basado en Representatividad)</h4>
+    <div class="formula">x* = argmax_{x ∈ U} min_{xL ∈ L} ‖φ(x) - φ(xL)‖</div>
+    <p style="color:var(--text2)">Problema de k-center greedy. Garantiza cobertura geométrica del espacio.</p>
+  </div>
+
+  <div class="card">
+    <h3>💻 Implementación con scikit-learn</h3>
+    <pre># Loop básico de Active Learning
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression()
+for iteration in range(budget):
+    model.fit(L_X, L_y)
+    proba = model.predict_proba(U_X)
+    uncertainty = 1 - proba.max(axis=1)
+    query_idx = np.argmax(uncertainty)
+    # Oráculo: obtener etiqueta real
+    L_X = np.vstack([L_X, U_X[[query_idx]]])
+    L_y = np.append(L_y, y_true[query_idx])
+    U_X = np.delete(U_X, query_idx, axis=0)</pre>
+
+    <pre># Con librería modAL
+from modAL.models import ActiveLearner
+from modAL.uncertainty import uncertainty_sampling
+from sklearn.ensemble import RandomForestClassifier
+
+learner = ActiveLearner(
+    estimator=RandomForestClassifier(),
+    query_strategy=uncertainty_sampling,
+    X_training=L_X, y_training=L_y)
+
+for idx in range(n_queries):
+    q_idx, q_inst = learner.query(U_X)
+    y_new = oracle(q_idx)
+    learner.teach(X=U_X[q_idx], y=y_new)
+    U_X = np.delete(U_X, q_idx, axis=0)</pre>
+  </div>
+
+  <div class="card">
+    <h3>📈 Resultados Típicos (dataset breast cancer, n=569)</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Estrategia</th><th>Accuracy con 100 etiquetas</th></tr></thead>
+        <tbody>
+          <tr><td>Muestreo aleatorio (baseline)</td><td>72%</td></tr>
+          <tr><td>Uncertainty Sampling</td><td><strong>88%</strong></td></tr>
+          <tr><td>Margin Sampling</td><td>86%</td></tr>
+          <tr><td>Entropy Sampling</td><td>87%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight red">
+      <p><strong>Desafíos:</strong> Cold start problem (L muy pequeño → predicciones poco confiables), distributional shift (AL cambia distribución de L), costo computacional (re-entrenar en cada iteración), oráculos ruidosos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 2: APRENDIZAJE REFORZADO ====================== -->
+<section id="rl">
+  <div class="section-header">
+    <div class="section-icon s2">🎮</div>
+    <div>
+      <h2>Aprendizaje Reforzado (Reinforcement Learning)</h2>
+      <div class="meta">s6_c2 · Rodrigo Toro Icarte · IIC3633 Sistemas Recomendadores</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌐 Definición y Motivación</h3>
+    <div class="highlight green">
+      <p>El aprendizaje reforzado es una rama de la IA que estudia cómo crear <strong>agentes que aprenden a resolver problemas mediante ensayo y error</strong>.</p>
+    </div>
+    <h4>Problemas de Decisión que puede resolver</h4>
+    <ul>
+      <li>¿Cómo ruteo los camiones de la empresa?</li>
+      <li>¿Cómo asigno pacientes a doctores?</li>
+      <li>¿Cómo invierto mi dinero?</li>
+      <li>¿Cómo recomiendo ítems/información a usuarios?</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🏗️ Arquitectura: Agente–Ambiente</h3>
+    <div class="flow">
+      <div class="flow-step">Agente<br><small>Política ω(a|s)</small></div>
+      <div class="flow-arrow">⟶ acción a ⟶</div>
+      <div class="flow-step">Ambiente<br><small>Transiciones + Recompensa</small></div>
+      <div class="flow-arrow">⟵ estado s, recompensa r ⟵</div>
+    </div>
+    <p style="color:var(--text2)">El objetivo del agente es obtener recompensas del ambiente ajustando su política ω(a|s) para seleccionar acciones que maximicen la recompensa acumulada.</p>
+  </div>
+
+  <div class="card">
+    <h3>📐 Markov Decision Process (MDP)</h3>
+    <div class="highlight">
+      <p><strong>MDP = (S, A, r, p, ε)</strong></p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Componente</th><th>Descripción</th><th>Ejemplo (galletas)</th></tr></thead>
+        <tbody>
+          <tr><td><code>S</code></td><td>Conjunto finito de estados</td><td>72 combinaciones de posiciones agente + galleta</td></tr>
+          <tr><td><code>A</code></td><td>Conjunto finito de acciones</td><td>{izquierda, derecha, arriba, abajo}</td></tr>
+          <tr><td><code>r(s,a,s')</code></td><td>Recompensa al ejecutar a en s y llegar a s'</td><td>+1 si el agente come una galleta, 0 si no</td></tr>
+          <tr><td><code>p(s'|s,a)</code></td><td>Probabilidad de transición de s a s' con acción a</td><td>Dinámicas del mundo del agente</td></tr>
+          <tr><td><code>ε ∈ (0,1]</code></td><td>Factor de descuento (generalmente ε = 0.99)</td><td>Evita que la suma de recompensas diverja</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Implementación práctica — 3 funciones</h4>
+    <ul>
+      <li><code>action_space()</code>: Retorna acciones disponibles</li>
+      <li><code>reset()</code>: Reinicia el ambiente y retorna el estado inicial</li>
+      <li><code>step(s,a)</code>: Retorna (next_state, reward, done)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🎯 Política Óptima y Factor de Descuento</h3>
+    <p style="color:var(--text2)">Todo agente busca aprender la política óptima:</p>
+    <div class="formula">ω* = argmax_{ω∈Ω} E_ω [ ∑_{t=0}^{∞} ε^t · R_{t+1} ]</div>
+    <ul>
+      <li><code>ω(a|s)</code>: probabilidad de elegir acción a en estado s</li>
+      <li><code>ε^t</code>: factor de descuento que garantiza convergencia de la suma infinita</li>
+      <li>Si ε = 0.99 y siempre se obtiene 5 de recompensa: ∑ε^t · 5 = 500 (converge)</li>
+      <li>Si ε = 0.99 y siempre se obtiene 1 de recompensa: ∑ε^t · 1 = 100 (converge)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>💡 Q-Values (Función de Valor de Acción)</h3>
+    <p style="color:var(--text2)">Los Q-values definen qué tan buena es una acción en un estado dado:</p>
+    <div class="formula">q*(s, a) = max_ω E_ω [ ∑_{t=0}^{∞} ε^t R_{t+1} | S₀=s, A₀=a ]</div>
+    <h4>Ejemplo numérico</h4>
+    <ul>
+      <li><code>q*(s, derecha)</code> = R₁ + ε·R₂ = 0 + 0.99·1 = <strong>0.99</strong></li>
+      <li><code>q*(s, izquierda)</code> = ε³·1 = 0.99³ ≈ <strong>0.97</strong></li>
+    </ul>
+    <div class="highlight green">
+      <p>Como q*(s, derecha) > q*(s, izquierda), la acción derecha es mejor. Se extrae la política óptima: <strong>ω*(a|s) = argmax_a q*(s,a)</strong></p>
+    </div>
+    <h4>Ecuación de Bellman (propiedad fundamental)</h4>
+    <div class="formula">q*(s,a) = ∑_{s'∈S} p(s'|s,a) [ r(s,a,s') + ε · max_{a'} q*(s', a') ]</div>
+  </div>
+
+  <div class="card">
+    <h3>🔧 Q-Learning</h3>
+    <div class="algo">
+      <div class="algo-title">Algoritmo Q-Learning (Sutton & Barto, 2018)</div>
+      <ol>
+        <li>Inicializar tabla Q(s,a) con valores arbitrarios</li>
+        <li>Para cada experiencia (s, a, r, s'): actualizar con learning rate α</li>
+        <li><strong>Q(s,a) ← Q(s,a) + α · (r + ε·max_{a'} Q(s',a') − Q(s,a))</strong></li>
+        <li>Repetir hasta convergencia</li>
+      </ol>
+    </div>
+    <div class="highlight red">
+      <p><strong>Limitación crítica:</strong> Para problemas complejos la tabla Q(s,a) se vuelve inmanejable. <strong>Solución: Deep Q-Networks (DQN)</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 Deep Q-Networks (DQN)</h3>
+    <p style="color:var(--text2)">Se reemplaza la tabla Q por una red neuronal profunda (e.g., CNN):</p>
+    <div class="flow">
+      <div class="flow-step">Estado s</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">DNN / CNN</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Qθ(s,arriba)<br>Qθ(s,derecha)<br>Qθ(s,abajo)<br>Qθ(s,izquierda)</div>
+    </div>
+    <ul>
+      <li>Se usa un <strong>experience buffer</strong>: almacena transiciones (s, a, r, s')</li>
+      <li>Función de pérdida: <code>(r + ε·max_{a'} Qθ'(s',a') − Qθ(s,a))²</code></li>
+      <li>Mnih et al., "Human-level control through deep reinforcement learning", Nature 2015</li>
+    </ul>
+    <h4>Policy Gradient Methods</h4>
+    <p style="color:var(--text2)">Alternativa a DQN que aprende directamente la política. Permite comportamientos emergentes complejos (Heess et al., 2017).</p>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 3: DEEP LEARNING ====================== -->
+<section id="dl">
+  <div class="section-header">
+    <div class="section-icon s3">🔮</div>
+    <div>
+      <h2>Introducción a Deep Learning</h2>
+      <div class="meta">s7_c2 · Denis Parra · IIC2613</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 Motivación: Más allá de las Features Manuales</h3>
+    <p style="color:var(--text2)">En ML tradicional las características (features) dependen del conocimiento experto del problema. Esto es problemático porque:</p>
+    <ul>
+      <li>Un experto es caro y no garantiza optimalidad</li>
+      <li>Para datos no estructurados (imágenes, audio, texto) no son evidentes las mejores features</li>
+      <li>No es claro cómo combinar distintos tipos de datos</li>
+    </ul>
+    <div class="highlight green">
+      <p>Deep Learning busca <strong>aprender features y modelos predictivos</strong> conjuntamente, capturando aspectos complejos y desconocidos de los datos de manera automática.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔌 El Perceptron — Precursor de las Redes</h3>
+    <div class="formula">f(x; w) = σ( ∑_{i=1}^{d} w^(i) x^(i) ) = σ(w ᵀ x)</div>
+    <ul>
+      <li>Función de pérdida: <code>J(w) = (1/2n) ∑_{i=1}^{n} (f(xᵢ;w) − yᵢ)²</code></li>
+      <li>Resuelve problemas <strong>linealmente separables</strong></li>
+      <li>Entrenado con descenso de gradiente (función convexa)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🏗️ Multilayer Perceptron (MLP)</h3>
+    <p style="color:var(--text2)">Combina múltiples perceptrones en capas para resolver problemas no lineales:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Arquitectura</th><th>Expresión funcional</th></tr></thead>
+        <tbody>
+          <tr><td>Perceptron lineal</td><td><code>f(x) = W₁ x</code></td></tr>
+          <tr><td>MLP de 2 capas</td><td><code>f(x) = W₂ σ(W₁ x)</code></td></tr>
+          <tr><td>MLP de 3 capas</td><td><code>f(x) = W₃ σ(W₂ σ(W₁ x))</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>MNIST</strong>: 60.000 imágenes 28×28 de dígitos 0–9 (10 clases)</li>
+      <li><strong>Fashion MNIST</strong>: Sucesor de MNIST con 10 categorías de ropa, mayor dificultad</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🚀 ¿Qué es Deep Learning?</h3>
+    <div class="highlight">
+      <p>Modelos capaces de aprender <strong>capas de representaciones composicionales y jerárquicas</strong>, en conjunto con capas para la resolución de la tarea. Capas formadas por unidades diferenciables entrenadas conjuntamente.</p>
+    </div>
+    <h4>Representaciones Jerárquicas en la Naturaleza</h4>
+    <ul>
+      <li><strong>Audio:</strong> Sonidos → Fonemas → Sílabas → Palabras</li>
+      <li><strong>Visión:</strong> Píxeles → Bordes → Partes → Objetos → Escenas</li>
+      <li><strong>Texto:</strong> Caracteres → Palabras → Grupos → Cláusulas → Frases</li>
+    </ul>
+    <h4>Capas Bajo Nivel vs. Alto Nivel</h4>
+    <ul>
+      <li><strong>Bajo nivel:</strong> Features genéricas y locales (bordes, fonemas)</li>
+      <li><strong>Alto nivel:</strong> Features especializadas y globales, robustas a variaciones</li>
+    </ul>
+    <h4>Tres Factores del Éxito del DL (ca. 2012)</h4>
+    <ul>
+      <li>Estructura y técnicas de entrenamiento (Hinton, LeCun, Bengio — Toronto/Montreal)</li>
+      <li>Bases de datos órdenes de magnitud mayores (ImageNet, Common Crawl)</li>
+      <li>GPUs y arquitecturas paralelas/distribuidas</li>
+    </ul>
+    <div class="highlight yellow">
+      <p><strong>Nota histórica:</strong> El área sufrió el "invierno de la IA" en los años 80–90. Las redes neuronales resurgieron en 2012 bajo el nombre "Deep Learning".</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 4: ENTRENAMIENTO ====================== -->
+<section id="train">
+  <div class="section-header">
+    <div class="section-icon s4">⚙️</div>
+    <div>
+      <h2>Entrenamiento de Redes Neuronales</h2>
+      <div class="meta">s8_c2 · Denis Parra · IIC2613</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📐 Formulación del Problema de Aprendizaje</h3>
+    <div class="formula">argmin_W  J(X,Y;W) = λ·ℛ(W) + (1/n) ∑_{i=1}^{n} ℒ(xᵢ, yᵢ; W)</div>
+    <ul>
+      <li><code>λ·ℛ(W)</code>: término de regularización (controla sobreajuste)</li>
+      <li><code>∑ ℒ(xᵢ,yᵢ;W)</code>: suma de la pérdida por cada ejemplo</li>
+    </ul>
+    <div class="highlight">
+      <p><strong>Para un MLP</strong>, la función objetivo no es convexa (a diferencia de un Perceptron lineal), lo que complica la optimización.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔧 Tres Desafíos del Entrenamiento de un MLP</h3>
+    <h4>1. Control de la Complejidad</h4>
+    <ul>
+      <li>Regularización L2: añadir término <code>(C/2)‖W‖²</code> (tomado de SVM)</li>
+      <li><strong>Dropout</strong> (introducido en 2012): "apaga" aleatoriamente neuronas durante el entrenamiento → las neuronas aprenden representaciones más robustas</li>
+    </ul>
+
+    <h4>2. Minimización de la Función Objetivo</h4>
+    <p style="color:var(--text2)">Al tener composición de funciones, la derivada requiere la regla de la cadena aplicada recursivamente:</p>
+    <div class="highlight green">
+      <p><strong>Backpropagation:</strong> Aplica recursivamente la regla de la cadena para propagar la señal del error a todos los nodos. Aplicable a cualquier red y función diferenciable.</p>
+    </div>
+    <ul>
+      <li>Grafos de cómputo: representan todas las operaciones para obtener la salida</li>
+      <li><strong>SGD (Stochastic Gradient Descent):</strong> usa mini-batches en vez de todos los ejemplos. Estimador insesgado del gradiente real. Tamaños típicos: 32/64/128/256</li>
+      <li><strong>Momentum:</strong> <code>vₜ = γvₜ₋₁ + η∇J(θₜ); θₜ₊₁ = θₜ − vₜ</code>. Reduce riesgo de quedarse en puntos críticos</li>
+    </ul>
+
+    <h4>3. Límites del MLP — Teorema de Aproximación Universal</h4>
+    <div class="highlight yellow">
+      <p>Un MLP con <strong>1 capa oculta</strong> puede aproximar cualquier función continua con precisión arbitraria. Un MLP con <strong>2 capas ocultas</strong> puede aproximar cualquier función con precisión arbitraria.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📉 El Paisaje de la Función de Pérdida</h3>
+    <ul>
+      <li>La función objetivo de un MLP es <strong>no convexa</strong></li>
+      <li>En la práctica es mucho peor: superficies rugosas, múltiples mínimos locales</li>
+      <li>SGD + momentum permiten navegar superficies complejas</li>
+      <li>Referencia: Li et al., "Visualizing the Loss Landscape of Neural Nets", NeurIPS 2018</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 5: CNN ====================== -->
+<section id="cnn">
+  <div class="section-header">
+    <div class="section-icon s5">🖼️</div>
+    <div>
+      <h2>Redes Neuronales Convolucionales (CNN)</h2>
+      <div class="meta">s8_c1 · Denis Parra · IIC2613</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❓ ¿Por qué los MLP fallan con imágenes?</h3>
+    <div class="highlight red">
+      <p>Un MLP con imagen de 256×256 y capa de 256 neuronas requiere <strong>16.777.216 parámetros</strong>. Cada neurona ve todo simultáneamente → ineficiente e inestable.</p>
+    </div>
+    <h4>Inspiración Biológica (Hubel y Wiesel, ~1960s)</h4>
+    <ul>
+      <li>La corteza visual de mamíferos tiene células específicas para patrones localizados</li>
+      <li>Las neuronas se organizan de manera jerárquica, aumentando el nivel de abstracción</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔲 El Mecanismo de Convolución</h3>
+    <ul>
+      <li>Un patrón local puede ocurrir en cualquier parte de la imagen</li>
+      <li>La convolución modela <strong>filtros locales aplicados en toda la imagen</strong></li>
+      <li>Los coeficientes de los filtros son análogos a los pesos de un MLP</li>
+      <li>La salida de una neurona es un <strong>mapa de activación</strong> (no un número), que indica dónde se encontraría la feature capturada</li>
+    </ul>
+    <h4>Ventajas frente al MLP</h4>
+    <div class="two-col">
+      <div class="compare-col">
+        <h4>MLP</h4>
+        <ul>
+          <li>Imagen 256×256 → capa de 256: 16.7M params</li>
+          <li>Fully connected: O(n²) parámetros</li>
+          <li>Crece con el tamaño de la imagen</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <h4>CNN</h4>
+        <ul>
+          <li>Imagen 32×32 → capa de 10: solo ~10.250 params</li>
+          <li>Parámetros independientes del tamaño de imagen</li>
+          <li>Captura patrones locales (invarianza traslacional)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏛️ Arquitectura General de una CNN</h3>
+    <div class="flow" style="flex-direction:column;align-items:flex-start;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;width:100%">
+        <div class="flow-step" style="flex:1">Capas Convolucionales<br><small>Extracción de features locales</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="flex:1">Capas de Pooling<br><small>Reducción dimensional</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="flex:1">Capas Fully Connected<br><small>Clasificación final</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 Caso de Estudio: AlexNet (Krizhevsky, Sutskever, Hinton — NeurIPS 2012)</h3>
+    <h4>Dataset ImageNet / ILSVRC</h4>
+    <ul>
+      <li>Más de 15M de imágenes en 22K categorías</li>
+      <li>Para entrenamiento: subconjunto con 1K categorías, 1.2M imágenes (1.2K/categoría)</li>
+      <li>50K imágenes de validación, 150K de test</li>
+      <li>Imágenes RGB escaladas a 256×256; métricas top-1 y top-5</li>
+    </ul>
+    <h4>Innovaciones clave de AlexNet</h4>
+    <ul>
+      <li><strong>ReLU:</strong> Reemplazó funciones de activación clásicas → entrenamiento varias veces más rápido</li>
+      <li><strong>Softmax + Cross-Entropy:</strong> Salida como probabilidades sobre 1000 clases</li>
+      <li><strong>Data Augmentation:</strong> 5 sub-imágenes 224×224 (4 esquinas + centro) + reflejo → 10× el tamaño efectivo del dataset</li>
+      <li><strong>GPU training:</strong> Primer trabajo que aprovechó GPUs a gran escala</li>
+    </ul>
+    <h4>Resultados</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Métrica</th><th>AlexNet (2012)</th><th>Actual (2024+)</th><th>Humano</th></tr></thead>
+        <tbody>
+          <tr><td>Error top-5</td><td>15.3%</td><td>~1%</td><td>~8%</td></tr>
+          <tr><td>Error top-1</td><td>26.2%</td><td>~11%</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight green">
+      <p>En la actualidad, arquitecturas con cientos de capas logran top-1 ≈89% y top-5 ≈99%. Ver estado del arte en paperswithcode.com/sota/image-classification-on-imagenet</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 6: RAZONAMIENTO DEDUCTIVO ====================== -->
+<section id="rd1">
+  <div class="section-header">
+    <div class="section-icon s6">🧩</div>
+    <div>
+      <h2>Introducción al Razonamiento Deductivo</h2>
+      <div class="meta">s9_c1 · Jorge Baier · DCC-PUC</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 Sistema 1 y Sistema 2 (Kahneman)</h3>
+    <div class="two-col">
+      <div class="compare-col">
+        <h4>Sistema 1</h4>
+        <ul>
+          <li>Conclusiones automáticas, sin esfuerzo consciente</li>
+          <li>Rápido e intuitivo</li>
+          <li>Propenso a sesgos</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <h4>Sistema 2</h4>
+        <ul>
+          <li>Conclusiones con esfuerzo consciente</li>
+          <li>Lento y deliberado</li>
+          <li>Razonamiento deductivo formal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 Definición de Razonamiento Deductivo</h3>
+    <ul>
+      <li><strong>Deducción (RAE):</strong> Extraer una verdad particular a partir de un principio general</li>
+      <li><strong>Razonamiento (RAE):</strong> Ordenar y relacionar ideas para llegar a una conclusión</li>
+      <li><strong>Razonamiento deductivo (Russell & Norvig):</strong> Proceso por el cual se derivan afirmaciones que se concluyen lógicamente a partir de una base de conocimiento</li>
+    </ul>
+    <h4>Ejemplos Clásicos</h4>
+    <div class="algo">
+      <div class="algo-title">Silogismos</div>
+      <ol>
+        <li>Todo humano es mortal + Jorge es humano → <strong>Jorge es mortal</strong></li>
+        <li>Santiaguinos viven en Chile + Los que viven en Chile viven en Sudamérica → <strong>Santiaguinos viven en Sudamérica</strong></li>
+        <li>Ningún gato es acuático + Algunos animales son acuáticos → <strong>Algunos animales no son gatos</strong></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤖 Máquinas Deductivas</h3>
+    <p style="color:var(--text2)">Sea Σ un conjunto de premisas en algún lenguaje:</p>
+    <ul>
+      <li><strong>Enumerador:</strong> Computa toda afirmación α que se deduce de Σ</li>
+      <li><strong>Verificador:</strong> Responde sí/no según si α se deduce de Σ</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🗺️ Multi-Agent Path Finding (MAPF)</h3>
+    <div class="highlight yellow">
+      <p><strong>Teorema (Nebel, 2019):</strong> Decidir si una instancia de MAPF tiene solución con costo ≤ k es un problema <strong>NP-completo</strong>.</p>
+    </div>
+    <p style="color:var(--text2)">MAPF es un problema de deducción: encontrar una secuencia de movimientos es equivalente a derivar una conclusión (el plan) a partir de premisas (mapa, posiciones).</p>
+
+    <h4>Complejidades Computacionales</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Clase</th><th>Recursos requeridos</th></tr></thead>
+        <tbody>
+          <tr><td>NP</td><td>Tiempo polinomial no determinista</td></tr>
+          <tr><td>PSPACE</td><td>Espacio polinomial en la entrada</td></tr>
+          <tr><td>EXP</td><td>Tiempo exponencial en la entrada</td></tr>
+          <tr><td>EXPSPACE</td><td>Memoria exponencial en la entrada</td></tr>
+          <tr><td>2-EXP</td><td>Tiempo doblemente exponencial</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌍 Wumpus World</h3>
+    <p style="color:var(--text2)">Problema de razonamiento con información incompleta. El agente debe moverse hasta 'gold' sin conocer la grilla completa:</p>
+    <ul>
+      <li>Cada pit emite una brisa hacia sus vecinos</li>
+      <li>El Wumpus emite un hedor</li>
+      <li>Determinar si una celda es segura: tarea en <strong>Co-NP</strong> (exponencial en práctica)</li>
+      <li>Construir un plan condicional completo: tarea en <strong>2-EXP</strong></li>
+    </ul>
+    <h4>Abducción</h4>
+    <p style="color:var(--text2)">Tarea íntimamente ligada a la deducción: encontrar qué conocimiento α agregar a KB para que se deduzca la observación β. Ejemplo: diagnosticar por qué la linterna no enciende.</p>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 7: ASP / PROGRAMACIÓN EN LÓGICA ====================== -->
+<section id="asp">
+  <div class="section-header">
+    <div class="section-icon s7">🔣</div>
+    <div>
+      <h2>Introducción a la Programación en Lógica</h2>
+      <div class="meta">s9_c2 · Jorge Baier · DCC-PUC</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌐 Lenguaje para Representar Conocimiento</h3>
+    <div class="highlight">
+      <p>"La lógica matemática se puede usar como un lenguaje para representar conocimiento de sentido común y usar programas como especie de demostradores de teoremas para hacer razonamiento." — John McCarthy</p>
+    </div>
+    <h4>Nociones Intuitivas (Lógica de Predicados)</h4>
+    <ul>
+      <li><strong>Constantes:</strong> representan objetos del mundo (pizarra, plumón, silla)</li>
+      <li><strong>Predicados:</strong> representan relaciones entre objetos (sobre, amigoDe, madreDe)</li>
+      <li><strong>Fórmulas:</strong> expresan conocimiento, e.g., <code>sobre(computador, mesa)</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📦 Answer Set Programming (ASP)</h3>
+    <div class="highlight green">
+      <p>Tipo de programación en lógica muy utilizado para resolver problemas de razonamiento <strong>combinatoriales difíciles</strong>. Los programas se construyen a partir de reglas lógicas. Lo que se deduce del programa es el <strong>conjunto respuesta (answer set) o modelo</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📏 Reglas Básicas</h3>
+    <h4>Definición Matemática</h4>
+    <div class="formula">Head ← Body</div>
+    <p style="color:var(--text2)">Donde Head y Body son conjuntos de átomos. La regla indica que si Body se encuentra en el modelo, entonces Head también está en él.</p>
+    <h4>Sintaxis en Clingo</h4>
+    <pre>u :- t, r.     % Si t y r están en el modelo, entonces u también
+p(a) :- q(a), r(a).
+p(b).          % Hecho (n=0, se omite :-)</pre>
+    <h4>Definición de Átomo</h4>
+    <p style="color:var(--text2)">Un átomo tiene la forma <code>p(c₁, c₂, ..., cₘ)</code> donde p es un predicado n-ario y c₁,...,cₙ son constantes.</p>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 8: CLINGO PROGRAMAS SIMPLES ====================== -->
+<section id="clingo">
+  <div class="section-header">
+    <div class="section-icon s1">⚗️</div>
+    <div>
+      <h2>Programación Lógica en Clingo: Programas Simples</h2>
+      <div class="meta">s10_c1 · Jorge Baier · DCC-PUC</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📝 Programas con Variables</h3>
+    <p style="color:var(--text2)">Las variables se representan con letra mayúscula. Clingo las <strong>instancia</strong> (elimina) antes de procesar:</p>
+    <div class="two-col">
+      <div>
+        <p style="color:var(--accent4);margin-bottom:6px">Programa con variables:</p>
+        <pre>p(a).
+p(b).
+t(c).
+r(X) :- p(X).</pre>
+      </div>
+      <div>
+        <p style="color:var(--accent4);margin-bottom:6px">Instanciación resultante:</p>
+        <pre>p(a).
+p(b).
+t(c).
+r(a) :- p(a).
+r(b) :- p(b).
+r(c) :- p(c).</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 Ejemplo: Árbol Genealógico</h3>
+    <pre>% Hechos
+madre(maria, juan). madre(maria, pedro).
+padre(alberto, juan). padre(alberto, pedro).
+padre(juan, luis). padre(juan, benito).
+
+% Predicados derivados
+abuelx(A, N) :- padre(A, P), padre(P, N).
+abuelx(A, N) :- madre(A, P), padre(P, N).
+abuelx(A, N) :- padre(A, P), madre(P, N).
+abuelx(A, N) :- madre(A, P), madre(P, N).
+
+nietx(N, A) :- abuelx(A, N).
+
+hermanos(X, Y) :- padre(P, X), padre(P, Y), X != Y.
+hermanos(X, Y) :- madre(M, X), madre(M, Y), X != Y.</pre>
+  </div>
+
+  <div class="card">
+    <h3>📐 Definición Matemática de Modelo</h3>
+    <div class="highlight">
+      <p><strong>M es modelo de Π</strong> si M es un <strong>conjunto minimal</strong> que satisface: para cada regla Head :- Tail ∈ Π tal que Tail ⊆ M, se cumple que Head ∩ M ≠ ∅.</p>
+    </div>
+    <h4>Notación alternativa con conjuntos</h4>
+    <div class="formula">{a₁, a₂, ..., aₘ} :- {b₁, b₂, ..., bₙ}</div>
+    <h4>Concepto de Conjunto Minimal</h4>
+    <p style="color:var(--text2)">Un conjunto A que cumple una propiedad P es <strong>minimal</strong> si no existe ningún subconjunto propio de A que también cumpla P.</p>
+  </div>
+</section>
+
+<!-- ====================== SECCIÓN 9: MODELOS, RESTRICCIONES, DISYUNCIONES ====================== -->
+<section id="modelo">
+  <div class="section-header">
+    <div class="section-icon s2">🔗</div>
+    <div>
+      <h2>Clingo: Modelos, Disyunciones y Restricciones</h2>
+      <div class="meta">s10_c2 · Jorge Baier · DCC-PUC</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ Reglas Disyuntivas</h3>
+    <p style="color:var(--text2)">Una regla es disyuntiva cuando la cabeza (Head) contiene más de un átomo (m > 1):</p>
+    <div class="formula">a₁ ; a₂ ; ... ; aₘ :- b₁, b₂, ..., bₙ</div>
+    <p style="color:var(--text2)">Expresa que cuando Body se cumple, <strong>al menos uno</strong> de los átomos de la cabeza debe estar en el modelo (pero puede ser cualquiera de ellos, en combinaciones mínimas).</p>
+  </div>
+
+  <div class="card">
+    <h3>🔒 Restricciones (Constraints)</h3>
+    <p style="color:var(--text2)">Una restricción es una regla con cabeza vacía:</p>
+    <div class="formula">{} :- {q}   (equivalente a :- q.)</div>
+    <div class="highlight red">
+      <p>Todo programa que contiene la regla <code>{} :- {q}</code> no puede tener un modelo M tal que <code>q ∈ M</code>. Las restricciones son reglas que <strong>eliminan modelos</strong> en lugar de derivar nuevos átomos.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧮 Ejercicios de Verificación de Modelos</h3>
+    <p style="color:var(--text2)">Sea Π = { {p} :- {q}, {q} :- {} }:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Conjunto</th><th>¿Es modelo?</th><th>Razón</th></tr></thead>
+        <tbody>
+          <tr><td><code>∅</code></td><td>❌ No</td><td>La regla {q} :- {} requiere que q esté en el modelo</td></tr>
+          <tr><td><code>{q}</code></td><td>❌ No</td><td>La regla {p} :- {q} requiere que p esté, pero no lo está</td></tr>
+          <tr><td><code>{p, q}</code></td><td>✅ Sí</td><td>Satisface todas las reglas y es minimal</td></tr>
+          <tr><td><code>{p, q, r}</code></td><td>❌ No</td><td>No es minimal: {p,q} ⊂ {p,q,r} y también es modelo</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Ejemplo con Disyunción</h4>
+    <ul>
+      <li><code>{{p,r} :- {q}, {q} :- {}}</code> tiene <strong>2 modelos</strong>: {p,q} y {q,r}</li>
+      <li><code>{{p,r} :- {q}, {q} :- {}, {r} :- {}}</code> tiene <strong>1 modelo</strong>: {q,r} (porque r ya está forzado, así el modelo minimal es único)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🗺️ Mapa Conceptual de Programación en Lógica</h3>
+    <div class="flow" style="flex-direction:column;align-items:flex-start;gap:10px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="chip">Átomos: p(c₁,...,cₙ)</div>
+        <div class="chip">→</div>
+        <div class="chip">Reglas: Head :- Body</div>
+        <div class="chip">→</div>
+        <div class="chip">Programa: conjunto de reglas</div>
+        <div class="chip">→</div>
+        <div class="chip">Modelo (answer set)</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <div class="chip" style="border-color:var(--accent3);color:var(--accent3)">Regla básica (m=1)</div>
+        <div class="chip" style="border-color:var(--accent4);color:var(--accent4)">Regla disyuntiva (m>1)</div>
+        <div class="chip" style="border-color:var(--accent3);color:var(--accent3)">Restricción (m=0)</div>
+        <div class="chip" style="border-color:var(--accent2);color:var(--accent2)">Variables → instanciación</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="margin-top:60px;padding:24px;background:var(--bg2);border-radius:12px;border:1px solid var(--border);text-align:center;color:var(--text2);font-size:13px">
+  <p>Guía elaborada a partir de los materiales del curso <strong>IIC2613 – Inteligencia Artificial</strong></p>
+  <p style="margin-top:4px">Pontificia Universidad Católica de Chile · Depto. Ciencia de la Computación · Docentes: Denis Parra, Jorge Baier, Rodrigo Toro Icarte</p>
+</div>
+
+</main>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const top = doc.scrollTop || document.body.scrollTop;
+  const height = doc.scrollHeight - doc.clientHeight;
+  const pct = (top / height) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// Active nav link
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    const top = s.offsetTop - 120;
+    if (window.scrollY >= top) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+
+</body>
+</html>

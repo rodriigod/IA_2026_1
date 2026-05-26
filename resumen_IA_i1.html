@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumen IA – Interrogación 1 | Base para I2</title>
+<style>
+  :root {
+    --bg:      #0d0f1a;
+    --bg2:     #151826;
+    --bg3:     #1e2235;
+    --bg4:     #252a42;
+    --a1:      #7c6dfa;   /* violeta */
+    --a2:      #00d4aa;   /* verde */
+    --a3:      #ff6b8a;   /* rojo */
+    --a4:      #ffb84d;   /* naranja */
+    --a5:      #5bc4fa;   /* azul */
+    --txt:     #e8eaf6;
+    --txt2:    #8f9bca;
+    --bdr:     #252a45;
+    --code:    #181c2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--txt); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.75; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; width: 255px; height: 100vh;
+    background: var(--bg2); border-right: 1px solid var(--bdr);
+    overflow-y: auto; padding: 18px 0; z-index: 200;
+    scrollbar-width: thin; scrollbar-color: var(--bdr) transparent;
+  }
+  nav .logo { padding: 0 18px 14px; border-bottom: 1px solid var(--bdr); margin-bottom: 10px; }
+  nav .logo span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--a1); font-weight: 700; }
+  nav .logo small { color: var(--txt2); font-size: 11px; }
+  nav .grp { font-size: 10px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--a4); padding: 12px 18px 3px; }
+  nav a {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 18px; color: var(--txt2); text-decoration: none;
+    font-size: 12.5px; border-left: 3px solid transparent;
+    transition: all .18s;
+  }
+  nav a .ico { font-size: 14px; }
+  nav a:hover, nav a.active { color: var(--txt); border-left-color: var(--a1); background: rgba(124,109,250,.1); }
+
+  /* ── MAIN ── */
+  main { margin-left: 255px; padding: 36px 44px 80px; max-width: 1080px; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(140deg, #151826 0%, #1a1f38 60%, #1e1535 100%);
+    border: 1px solid var(--bdr); border-radius: 16px;
+    padding: 38px 42px; margin-bottom: 36px; position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: '📚'; position: absolute; right: 38px; top: 50%;
+    transform: translateY(-50%); font-size: 90px; opacity: .08; pointer-events: none;
+  }
+  .hero h1 { font-size: 26px; color: var(--a1); margin-bottom: 6px; }
+  .hero p { color: var(--txt2); font-size: 14px; max-width: 600px; margin-bottom: 16px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    padding: 4px 13px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    border: 1px solid; cursor: default;
+  }
+  .t1 { background: rgba(124,109,250,.15); border-color: var(--a1); color: var(--a1); }
+  .t2 { background: rgba(0,212,170,.12); border-color: var(--a2); color: var(--a2); }
+  .t3 { background: rgba(255,107,138,.12); border-color: var(--a3); color: var(--a3); }
+  .t4 { background: rgba(255,184,77,.12); border-color: var(--a4); color: var(--a4); }
+  .t5 { background: rgba(91,196,250,.12); border-color: var(--a5); color: var(--a5); }
+
+  /* ── ALERTA BASE ── */
+  .alert-base {
+    border-radius: 10px; padding: 12px 16px; margin: 14px 0; font-size: 14px;
+    border-left: 4px solid; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .alert-base .ico { font-size: 17px; flex-shrink: 0; padding-top: 1px; }
+  .info  { background: rgba(124,109,250,.1); border-color: var(--a1); }
+  .ok    { background: rgba(0,212,170,.09);  border-color: var(--a2); }
+  .warn  { background: rgba(255,184,77,.09); border-color: var(--a4); }
+  .danger{ background: rgba(255,107,138,.09);border-color: var(--a3); }
+
+  /* ── SECTION ── */
+  section { margin-bottom: 56px; scroll-margin-top: 72px; }
+  .sec-hdr {
+    display: flex; align-items: center; gap: 14px;
+    padding-bottom: 14px; border-bottom: 2px solid var(--bdr); margin-bottom: 22px;
+  }
+  .sico {
+    width: 46px; height: 46px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .c1 { background: rgba(124,109,250,.2); }
+  .c2 { background: rgba(0,212,170,.18); }
+  .c3 { background: rgba(255,107,138,.18); }
+  .c4 { background: rgba(255,184,77,.18); }
+  .c5 { background: rgba(91,196,250,.18); }
+  .c6 { background: rgba(124,109,250,.2); }
+  .sec-hdr h2 { font-size: 21px; }
+  .sec-hdr .meta { font-size: 12px; color: var(--txt2); margin-top: 2px; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--bg2); border: 1px solid var(--bdr); border-radius: 12px;
+    padding: 22px 24px; margin-bottom: 16px;
+  }
+  .card h3 {
+    font-size: 15px; color: var(--a2); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card h4 { font-size: 13.5px; color: var(--a4); margin: 14px 0 7px; font-weight: 600; }
+  .card p  { color: var(--txt2); margin-bottom: 9px; font-size: 14px; }
+  .card ul, .card ol { padding-left: 20px; color: var(--txt2); font-size: 14px; }
+  .card ul li, .card ol li { margin-bottom: 5px; }
+  .card ul li strong, .card ol li strong { color: var(--txt); }
+
+  /* ── FORMULA ── */
+  .f {
+    background: var(--code); border-left: 3px solid var(--a5);
+    border-radius: 0 8px 8px 0; padding: 11px 16px; margin: 10px 0;
+    font-family: 'Courier New', monospace; font-size: 13.5px; color: #89dceb;
+    overflow-x: auto;
+  }
+
+  /* ── CODE ── */
+  pre {
+    background: var(--code); border: 1px solid var(--bdr); border-radius: 8px;
+    padding: 14px 16px; font-size: 12.5px; overflow-x: auto;
+    color: #a6e3a1; margin: 10px 0; line-height: 1.55;
+  }
+  code { background: var(--code); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: #cba6f7; }
+
+  /* ── 2-COL ── */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 12px 0; }
+
+  /* ── COMPARE COLS ── */
+  .cmp { background: var(--bg3); border: 1px solid var(--bdr); border-radius: 9px; padding: 14px 16px; }
+  .cmp h4 { color: var(--a5); font-size: 13px; margin-bottom: 8px; }
+  .cmp ul { padding-left: 16px; }
+  .cmp ul li { font-size: 13px; color: var(--txt2); margin-bottom: 4px; }
+
+  /* ── TABLE ── */
+  .tw { overflow-x: auto; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--bg4); color: var(--a1); padding: 9px 13px; text-align: left; border-bottom: 1px solid var(--bdr); }
+  td { padding: 8px 13px; border-bottom: 1px solid var(--bdr); color: var(--txt2); vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ── FLOW ── */
+  .flow {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0;
+    background: var(--bg3); border-radius: 10px; padding: 12px 16px; margin: 12px 0;
+  }
+  .fs { background: var(--bg2); border: 1px solid var(--a1); border-radius: 7px; padding: 7px 12px; font-size: 12.5px; text-align: center; }
+  .fa { color: var(--a1); font-size: 18px; padding: 0 8px; }
+
+  /* ── CHIP ── */
+  .chip { display: inline-block; background: var(--bg3); border: 1px solid var(--bdr); border-radius: 4px; padding: 2px 8px; font-size: 12px; color: var(--txt2); margin: 2px; }
+
+  /* ── PROGRESS BAR ── */
+  #pbar { position: fixed; top: 0; left: 0; height: 3px; background: var(--a1); z-index: 999; transition: width .08s; }
+
+  /* ── SCROLL TOP ── */
+  #st { position: fixed; bottom: 22px; right: 22px; background: var(--a1); color: #fff; border: none; border-radius: 50%; width: 38px; height: 38px; font-size: 17px; cursor: pointer; z-index: 300; display: flex; align-items: center; justify-content: center; opacity: .85; transition: opacity .2s; }
+  #st:hover { opacity: 1; }
+
+  @media(max-width:720px){ main{ margin-left:0; padding:16px; } nav{ display:none; } }
+</style>
+</head>
+<body>
+
+<div id="pbar"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="logo">
+    <span>IIC2613 · IA</span>
+    <small>Resumen Interrogación 1</small>
+  </div>
+  <div class="grp">Fundamentos</div>
+  <a href="#s1"><span class="ico">🤖</span>¿Qué es ML?</a>
+  <a href="#s2"><span class="ico">📦</span>Datos y Generalización</a>
+  <div class="grp">Modelos Clásicos</div>
+  <a href="#s3"><span class="ico">🌳</span>Árboles de Decisión</a>
+  <a href="#s4"><span class="ico">🌲</span>Ensambles</a>
+  <div class="grp">Evaluación y Regresión</div>
+  <a href="#s5"><span class="ico">📏</span>Métricas de Evaluación</a>
+  <a href="#s6"><span class="ico">📈</span>Regresión Lineal</a>
+  <a href="#s7"><span class="ico">🎲</span>Regresión Logística</a>
+  <div class="grp">SVM</div>
+  <a href="#s8"><span class="ico">⚔️</span>Support Vector Machines</a>
+  <a href="#s9"><span class="ico">🔮</span>Kernel SVM</a>
+  <div class="grp">Mapa global</div>
+  <a href="#s10"><span class="ico">🗺️</span>Resumen integrador</a>
+</nav>
+
+<!-- ══════════ MAIN ══════════ -->
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>📘 Resumen Interrogación 1 — Base para I2</h1>
+  <p>Todo lo que debes recordar de la primera prueba antes de estudiar la materia nueva. Cubre los fundamentos de Machine Learning que sustentan Deep Learning, Active Learning, RL y Programación Lógica.</p>
+  <div class="tags">
+    <span class="tag t1">Fundamentos ML</span>
+    <span class="tag t2">Árboles & Ensambles</span>
+    <span class="tag t3">Métricas</span>
+    <span class="tag t4">Regresión Lineal & Logística</span>
+    <span class="tag t5">SVM & Kernels</span>
+  </div>
+</div>
+
+<!-- ══ S1: Fundamentos ML ══ -->
+<section id="s1">
+  <div class="sec-hdr">
+    <div class="sico c1">🤖</div>
+    <div>
+      <h2>¿Qué es Machine Learning?</h2>
+      <div class="meta">s2_c1 · Denis Parra · Introducción a ML</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 Definición Central</h3>
+    <div class="alert-base info"><span class="ico">💡</span>
+      <span><strong>Machine Learning</strong> es el estudio de técnicas que permiten a los computadores aprender <em>inductivamente</em>, mejorando su rendimiento en una tarea a través de la experiencia (datos), sin ser programados explícitamente para ello.</span>
+    </div>
+    <ul>
+      <li>Aprende desde ejemplos particulares → generaliza a nuevos casos</li>
+      <li>Generalmente mejora al exponerse a <strong>más datos</strong></li>
+      <li>Busca <em>aprendizaje</em> (representaciones útiles) más que modelación explícita</li>
+      <li>Sólidas bases teóricas, aunque lo práctico suele ir más rápido</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🆚 IA Tradicional vs. Machine Learning</h3>
+    <div class="g2">
+      <div class="cmp">
+        <h4>IA Tradicional (AGI)</h4>
+        <ul>
+          <li>Aspiraba a máquinas tan inteligentes como un humano</li>
+          <li>Programación directa de reglas (if-else, lógica)</li>
+          <li>Gran flexibilidad general → muy difícil de construir</li>
+          <li>Ejemplo: ChatGPT parece alinearse con esta visión</li>
+        </ul>
+      </div>
+      <div class="cmp">
+        <h4>Machine Learning</h4>
+        <ul>
+          <li>Máquinas especializadas en tarea(s) específica(s)</li>
+          <li>Aprenden <em>inductivamente</em> desde datos</li>
+          <li>Pueden superar a humanos en la tarea asignada</li>
+          <li>Depende de la explosión del Big Data (~1990+)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert-base warn"><span class="ico">⚠️</span>
+      <span>Los LLMs (motor de ChatGPT) son construidos con técnicas de ML, pero su comportamiento se acerca a la IA tradicional. Son un punto medio entre ambas concepciones.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 Tipos de Aprendizaje</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Tipo</th><th>Descripción</th><th>Señal de entrenamiento</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Supervisado</strong></td><td>Se proveen etiquetas (anotaciones) para cada ejemplo</td><td>Pares (x, y) etiquetados</td></tr>
+        <tr><td><strong>No supervisado</strong></td><td>Sin etiquetas; el modelo descubre estructura (clustering)</td><td>Solo vectores x</td></tr>
+        <tr><td><strong>Reforzado</strong></td><td>Agente aprende por ensayo/error con recompensas</td><td>Acciones + recompensas</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ Esquema General de un Sistema de ML</h3>
+    <div class="flow">
+      <div class="fs">Datos de<br>Entrenamiento</div>
+      <div class="fa">→</div>
+      <div class="fs">Algoritmo de<br>Aprendizaje</div>
+      <div class="fa">→</div>
+      <div class="fs">Modelo<br>Predictivo</div>
+      <div class="fa">→</div>
+      <div class="fs">Predicción<br>/ Solución</div>
+    </div>
+    <p>El algoritmo de aprendizaje busca en el <strong>espacio de hipótesis</strong> la hipótesis con menor pérdida en los datos de entrenamiento, apoyándose en el <strong>sesgo inductivo</strong> del modelo.</p>
+    <h4>La función objetivo general del ML</h4>
+    <div class="f">argmin_W  J(X,Y;W)  =  λ·ℛ(W)  +  (1/n)·∑ᵢ ℒ(f(xᵢ;W), yᵢ)
+─────────────────────────────────────────────────────
+ λ·ℛ(W)        → Regularizador (sesgo inductivo, controla complejidad)
+ ∑ℒ(f(xᵢ;W),yᵢ) → Suma de pérdidas en cada ejemplo del training set
+ W              → Parámetros del modelo (viven en el espacio de hipótesis)</div>
+    <div class="alert-base ok"><span class="ico">🔑</span>
+      <span>Esta fórmula es el <strong>hilo conductor de todo el curso</strong>. Cada modelo (regresión, SVM, redes neuronales) es una instancia particular de ella con diferente ℛ y diferente ℒ.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S2: Datos y Generalización ══ -->
+<section id="s2">
+  <div class="sec-hdr">
+    <div class="sico c2">📦</div>
+    <div>
+      <h2>Representación de Datos y Generalización</h2>
+      <div class="meta">s2_c2 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📐 Datos como Vectores de Características</h3>
+    <ul>
+      <li>Cada dato es un <strong>vector de características</strong> (features / atributos / variables independientes)</li>
+      <li>El conjunto de todos los vectores define el <strong>espacio de características (feature space)</strong></li>
+      <li>La dimensionalidad es el número de features → todos los datos deben tener la misma cantidad</li>
+      <li>La <strong>etiqueta</strong> (label / rótulo) es la variable dependiente: el valor a predecir</li>
+      <li>El identificador del dato nunca es una feature (no aporta información generalizadora)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ Conjuntos de Datos</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Conjunto</th><th>Uso</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Training set</strong></td><td>Entrenar / ajustar el modelo</td><td>El modelo "ve" estos datos</td></tr>
+        <tr><td><strong>Validation set</strong></td><td>Seleccionar hiperparámetros y comparar modelos</td><td>Parte del training; no se usa para entrenar inicialmente</td></tr>
+        <tr><td><strong>Test set</strong></td><td>Evaluar capacidad de generalización final (holdout)</td><td>El modelo jamás lo debe ver antes de la evaluación</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Validación Cruzada (Cross-Validation)</h4>
+    <p>Usa múltiples y distintos conjuntos de entrenamiento/validación sobre el mismo training set. Caracteriza mejor el rendimiento real, pero es costosa computacionalmente.</p>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ Bias-Variance Tradeoff</h3>
+    <div class="f">Err(x) = Sesgo² + Varianza + Error irreducible
+─────────────────────────────────────────────────
+Sesgo²   = ( E[f̂(x)] − f(x) )²     → error sistemático del modelo
+Varianza = E[ (f̂(x) − E[f̂(x)])² ] → sensibilidad a cambios en los datos
+Error irreducible = σ²               → ruido inherente al problema</div>
+    <div class="g3">
+      <div class="cmp" style="border-color:rgba(255,107,138,.4)">
+        <h4 style="color:var(--a3)">Underfitting</h4>
+        <ul>
+          <li>Modelo demasiado <strong>simple</strong></li>
+          <li>Alto sesgo, baja varianza</li>
+          <li>Falla en training Y test</li>
+          <li>Causa: pocas features, modelo poco flexible</li>
+        </ul>
+      </div>
+      <div class="cmp" style="border-color:rgba(0,212,170,.4)">
+        <h4 style="color:var(--a2)">Balance óptimo</h4>
+        <ul>
+          <li>Complejidad adecuada</li>
+          <li>Sesgo y varianza controlados</li>
+          <li>Captura patrones relevantes</li>
+          <li>Buena generalización</li>
+        </ul>
+      </div>
+      <div class="cmp" style="border-color:rgba(255,184,77,.4)">
+        <h4 style="color:var(--a4)">Overfitting</h4>
+        <ul>
+          <li>Modelo demasiado <strong>complejo</strong></li>
+          <li>Baja sesgo, alta varianza</li>
+          <li>Bien en training, mal en test</li>
+          <li>Memoriza hasta el ruido</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert-base info"><span class="ico">💡</span>
+      <span>La <strong>complejidad del modelo</strong> es la palanca que controla el tradeoff. Reducirla → más sesgo; aumentarla → más varianza. El regularizador λ·ℛ(W) es el mecanismo matemático para este control.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S3: Árboles ══ -->
+<section id="s3">
+  <div class="sec-hdr">
+    <div class="sico c3">🌳</div>
+    <div>
+      <h2>Árboles de Decisión</h2>
+      <div class="meta">s3_c1 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏗️ Estructura y Funcionamiento</h3>
+    <ul>
+      <li>Técnica de aprendizaje supervisado: sirve para <strong>clasificación</strong> y <strong>regresión</strong></li>
+      <li>Funciona con features binarias, categóricas y numéricas</li>
+      <li><strong>Nodo interno</strong>: realiza un test sobre una característica (feature)</li>
+      <li><strong>Arista</strong>: resultado del test (valor de la feature)</li>
+      <li><strong>Nodo hoja</strong>: clase predicha (clasificación) o valor promedio (regresión)</li>
+      <li>Para clasificar: recorrer desde la raíz hasta una hoja</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔧 Algoritmo de Construcción (Recursivo)</h3>
+    <ol>
+      <li>Si <strong>todos los registros son de la misma clase</strong> → nodo hoja con esa clase</li>
+      <li>Si <strong>todos tienen el mismo valor para todas las features</strong> → nodo hoja con la clase más común</li>
+      <li>De lo contrario:
+        <ol type="a">
+          <li>Seleccionar la <strong>mejor feature</strong> (mayor Information Gain)</li>
+          <li>Usarla como nodo raíz del subárbol</li>
+          <li>Dividir el conjunto y continuar recursivamente por cada rama</li>
+        </ol>
+      </li>
+    </ol>
+    <h4>Algoritmos clásicos</h4>
+    <ul>
+      <li><strong>ID3</strong>: usa solo entropía, atributos categóricos, divide en 2 ramas</li>
+      <li><strong>C4.5</strong>: extiende ID3 para atributos continuos y más de 2 ramas por nodo</li>
+      <li><strong>CART</strong>: permite árboles de regresión (minimiza MSE) y clasificación</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📐 Criterios de Partición</h3>
+    <h4>Entropía</h4>
+    <div class="f">H(D) = −∑_{y∈Y} P(y) · log₂P(y)
+─────────────────────────────────
+• H = 0  → distribución pura (todo en una clase) → ideal
+• H máx → distribución uniforme → peor caso para clasificar</div>
+    <p>Ejemplo: 20 datos, mitad clase A y mitad clase B → H = −0.5·log₂(0.5) − 0.5·log₂(0.5) = <strong>1 bit</strong> (máxima incertidumbre)</p>
+
+    <h4>Information Gain (Ganancia de Información)</h4>
+    <div class="f">InfoGain(D, F) = Entropy(D) − ∑_{v ∈ valores(F)}  (|Sᵥ|/|D|) · Entropy(Sᵥ)
+─────────────────────────────────────────────────────────────────────
+Elegimos la feature F que maximiza InfoGain → mayor reducción de entropía</div>
+
+    <h4>Gini Index</h4>
+    <div class="f">Gini(D) = 1 − ∑_{y∈Y} P(y)²
+Mide la "impureza" o desigualdad entre clases. Alternativa a la entropía.</div>
+
+    <h4>Para Regresión (CART)</h4>
+    <p>Cada nodo hoja retorna la <strong>media</strong> de los ejemplos que contiene. El criterio de partición minimiza el error cuadrático (MSE) en cada rama.</p>
+
+    <h4>Variables numéricas → cómo encontrar el umbral</h4>
+    <ul>
+      <li>Ordenar por la dimensión, evaluar splits en cada cambio de categoría</li>
+      <li>Elegir el umbral con mayor Information Gain</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ Sobreajuste y Control</h3>
+    <div class="alert-base danger"><span class="ico">🔴</span>
+      <span>Los árboles tienden a crecer hasta memorizar los datos de entrenamiento → <strong>alto riesgo de overfitting</strong>. Su sesgo inductivo (Navaja de Occam) favorece árboles poco profundos.</span>
+    </div>
+    <h4>Criterios de parada (Stopping Criteria)</h4>
+    <ul>
+      <li>Nodos puros (Entropía = 0 o Gini = 0)</li>
+      <li>Se alcanzó la profundidad máxima (<code>max_depth</code>)</li>
+      <li>Mínimo número de muestras por hoja (<code>min_samples_leaf</code>)</li>
+      <li>Sin mejora estadísticamente significativa en la métrica</li>
+    </ul>
+    <h4>Técnicas adicionales</h4>
+    <ul>
+      <li>Detener construcción evaluando en un <strong>set de validación</strong></li>
+      <li><strong>Podado (pruning)</strong>: construir árbol completo y luego eliminar ramas</li>
+      <li>Penalizar complejidad en la métrica de selección del atributo</li>
+    </ul>
+    <div class="alert-base ok"><span class="ico">🪒</span>
+      <span><strong>Navaja de Occam:</strong> "En igualdad de condiciones, la explicación más sencilla suele ser la más probable." Los árboles poco profundos generalizan mejor.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S4: Ensambles ══ -->
+<section id="s4">
+  <div class="sec-hdr">
+    <div class="sico c4">🌲</div>
+    <div>
+      <h2>Métodos de Ensamble</h2>
+      <div class="meta">s3_c2 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 Idea Fundamental</h3>
+    <p>Combinar múltiples modelos débiles (ligeramente mejor que azar) para producir un modelo fuerte. <strong>Condición clave</strong>: los modelos deben tener baja correlación entre sí (patrones de error distintos) → los errores se cancelan en el promedio.</p>
+    <div class="alert-base info"><span class="ico">🗳️</span>
+      <span>Analogía: encuesta poblacional. Si preguntamos a suficientes personas independientes, la moda/promedio se acerca a la verdad, incluso si cada individuo se equivoca a veces.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌲 Bagging → Random Forests</h3>
+    <h4>Bagging (Bootstrap Aggregating)</h4>
+    <ul>
+      <li>Cada árbol se entrena sobre una <strong>muestra aleatoria con reemplazo</strong> del dataset</li>
+      <li>Reduce la correlación entre árboles → reduce varianza → reduce overfitting</li>
+      <li>Predicción final: <strong>voto de mayoría</strong> (clasificación) o <strong>promedio</strong> (regresión)</li>
+    </ul>
+    <h4>Random Forests = Bagging + Subconjunto aleatorio de features</h4>
+    <ul>
+      <li>En cada split, se elige un <strong>subconjunto aleatorio de features</strong> (típicamente √d features)</li>
+      <li>Evita que una feature muy buena domine todos los árboles → mayor diversidad</li>
+      <li>Limita la profundidad implícitamente → menor complejidad</li>
+    </ul>
+    <h4>Evaluación sin set de validación separado</h4>
+    <ul>
+      <li><strong>Out-of-Bag (OOB) error</strong>: cada árbol se evalúa sobre los datos que no vio → estimación gratuita de la generalización</li>
+      <li><strong>Importancia de variables</strong>: permutar el valor de una feature entre los ejemplos y medir la caída en performance</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📈 Boosting (Reducción Secuencial del Sesgo)</h3>
+    <ul>
+      <li>Modelos se entrenan <strong>secuencialmente</strong>, cada uno corrigiendo el error del anterior</li>
+      <li>El modelo n+1 aprende a predecir el <strong>residuo (error)</strong> del modelo n</li>
+      <li>Reduce el <strong>sesgo</strong> (bias), a diferencia de bagging que reduce varianza</li>
+    </ul>
+    <h4>Variantes modernas (estado del arte en datos tabulares)</h4>
+    <ul>
+      <li><strong>XGBoost</strong>, <strong>LightGBM</strong>, <strong>CatBoost</strong>: rendimiento muchas veces superior a redes neuronales en datos tabulares</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🏗️ Stacking (Meta-Modelo)</h3>
+    <ul>
+      <li>Se entrena un <strong>meta-modelo</strong> que toma como entrada las predicciones de otros modelos previamente entrenados</li>
+      <li>Útil en producción: inferencia liviana con pocas features de entrada</li>
+    </ul>
+    <div class="tw"><table>
+      <thead><tr><th>Método</th><th>Estrategia</th><th>Reduce</th><th>Uso típico</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Bagging</strong></td><td>Paralelo, muestras aleatorias de datos</td><td>Varianza</td><td>Random Forest</td></tr>
+        <tr><td><strong>Boosting</strong></td><td>Secuencial, corrige residuos</td><td>Sesgo</td><td>XGBoost, LightGBM</td></tr>
+        <tr><td><strong>Stacking</strong></td><td>Meta-modelo sobre predicciones</td><td>Ambos</td><td>Competencias, producción</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══ S5: Métricas ══ -->
+<section id="s5">
+  <div class="sec-hdr">
+    <div class="sico c5">📏</div>
+    <div>
+      <h2>Métricas de Evaluación</h2>
+      <div class="meta">s4_c1 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔢 Matriz de Confusión (Clasificación Binaria)</h3>
+    <div class="tw"><table>
+      <thead><tr><th></th><th>Predicho Positivo</th><th>Predicho Negativo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Real Positivo</strong></td><td style="color:var(--a2)"><strong>TP</strong> (Verdadero Positivo)</td><td style="color:var(--a3)"><strong>FN</strong> (Falso Negativo)</td></tr>
+        <tr><td><strong>Real Negativo</strong></td><td style="color:var(--a3)"><strong>FP</strong> (Falso Positivo)</td><td style="color:var(--a2)"><strong>TN</strong> (Verdadero Negativo)</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>📊 Métricas Fundamentales</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Métrica</th><th>Fórmula</th><th>Interpretación</th><th>Cuándo usarla</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Accuracy</strong></td><td><code>(TP+TN) / Total</code></td><td>% de predicciones correctas globales</td><td>Clases balanceadas</td></tr>
+        <tr><td><strong>Precision</strong></td><td><code>TP / (TP+FP)</code></td><td>De lo que predigo como positivo, ¿cuánto lo es realmente?</td><td>Cuando FP es costoso</td></tr>
+        <tr><td><strong>Recall (Sensibilidad)</strong></td><td><code>TP / (TP+FN)</code></td><td>De todos los positivos reales, ¿cuántos detecto?</td><td>Cuando FN es costoso (e.g., diagnóstico médico)</td></tr>
+        <tr><td><strong>F1-Score</strong></td><td><code>2·P·R / (P+R)</code></td><td>Media armónica de Precision y Recall</td><td>Clases desbalanceadas, quiero equilibrar P y R</td></tr>
+        <tr><td><strong>TP Rate</strong></td><td><code>TP / (TP+FN)</code></td><td>= Recall. Tasa de detección de positivos</td><td>Eje Y de curva ROC</td></tr>
+        <tr><td><strong>FP Rate</strong></td><td><code>FP / (FP+TN)</code></td><td>Tasa de falsa alarma sobre negativos reales</td><td>Eje X de curva ROC</td></tr>
+      </tbody>
+    </table></div>
+    <div class="alert-base warn"><span class="ico">⚠️</span>
+      <span>Si <strong>Recall clase A &lt; Recall clase B</strong>, el modelo tiende a predecir más frecuentemente clase B. Puede ocurrir por desbalance de clases en el training set.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📉 Curva ROC y AUC</h3>
+    <ul>
+      <li><strong>ROC</strong> (Receiver Operating Characteristic): grafica TP Rate (eje Y) vs. FP Rate (eje X) al variar el umbral de decisión</li>
+      <li><strong>AUC</strong> (Area Under Curve): área bajo la curva ROC. AUC = 1 → clasificador perfecto; AUC = 0.5 → clasificador aleatorio</li>
+      <li>Útil para comparar clasificadores independientemente del umbral elegido</li>
+      <li>Válida principalmente para <strong>clasificación binaria</strong></li>
+    </ul>
+    <h4>Multiclase → calcular por clase</h4>
+    <p>Para C clases, se calculan C matrices de confusión binarias (una-vs-resto) y se promedian las métricas (macro-average o weighted-average).</p>
+  </div>
+</section>
+
+<!-- ══ S6: Regresión Lineal ══ -->
+<section id="s6">
+  <div class="sec-hdr">
+    <div class="sico c6">📈</div>
+    <div>
+      <h2>Regresión Lineal</h2>
+      <div class="meta">s4_c2 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📐 Formulación del Modelo</h3>
+    <div class="f">f(x; θ) = θ₀ + θ₁x₁ + θ₂x₂ + ... + θₐxₐ = θᵀx  (con x₀=1)
+─────────────────────────────────────────────────────────────
+Función de pérdida (MSE — Mínimos Cuadrados):
+J(θ) = (1/2n) · ∑ᵢ (f(xᵢ;θ) − yᵢ)²</div>
+    <ul>
+      <li>Espacio de hipótesis: funciones lineales xᵢ → ℝ</li>
+      <li>Función de pérdida MSE es <strong>convexa</strong> → existe un mínimo global</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔧 Dos Métodos de Optimización</h3>
+    <div class="g2">
+      <div class="cmp">
+        <h4>OLS — Solución Analítica</h4>
+        <div class="f">θ = (XᵀX)⁻¹ Xᵀy</div>
+        <ul>
+          <li>Solución exacta, no iterativa</li>
+          <li>Costo: O(n³) por inversión matricial</li>
+          <li>Inviable para datasets muy grandes</li>
+        </ul>
+      </div>
+      <div class="cmp">
+        <h4>Descenso de Gradiente</h4>
+        <div class="f">θ ← θ − α · ∇J(θ)</div>
+        <ul>
+          <li>Iterativo; α = learning rate</li>
+          <li>Actualización proporcional al error</li>
+          <li>Escala a datasets grandes</li>
+          <li>En variante SGD: mini-batches</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 Regresión Polinomial</h3>
+    <p>Se generalizan las features aplicando transformaciones: <code>ϕ(x) = [1, x, x², ..., xᴹ]</code>. Se sigue aplicando regresión lineal sobre las nuevas features transformadas.</p>
+    <div class="alert-base warn"><span class="ico">⚠️</span>
+      <span>Grado M muy alto → <strong>overfitting</strong> (la curva pasa por todos los puntos de entrenamiento pero generaliza mal). Este es el mismo tradeoff de bias-varianza.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 Interpretación de Coeficientes</h3>
+    <p>Ejemplo: <code>Precio = 12M + 45.000·m² + 3.2M·piezas + 2.8M·baños + 4.5M·estac.</code></p>
+    <ul>
+      <li><strong>θ₀ = 12M</strong>: precio base (cuando todas las variables = 0, sin interpretación práctica útil aquí)</li>
+      <li><strong>θ₁ = 45.000</strong>: cada m² adicional → +$45.000 en precio, <em>manteniendo el resto constante</em></li>
+      <li>La frase <em>"manteniendo el resto constante"</em> es fundamental: cada coeficiente mide el efecto marginal de esa variable, aislado de las demás</li>
+    </ul>
+    <h4>Condiciones para interpretación válida</h4>
+    <ul>
+      <li><strong>Linealidad</strong>: la relación feature→target debe ser aproximadamente lineal</li>
+      <li><strong>No multicolinealidad</strong>: features no deben estar altamente correlacionadas entre sí</li>
+      <li><strong>Asociación ≠ Causalidad</strong>: θ positivo no implica que la variable cause el aumento del target</li>
+      <li>Si las features están <strong>estandarizadas</strong>, los coeficientes miden el cambio por desviación estándar</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ S7: Regresión Logística ══ -->
+<section id="s7">
+  <div class="sec-hdr">
+    <div class="sico c1">🎲</div>
+    <div>
+      <h2>Regresión Logística</h2>
+      <div class="meta">s4_c2 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 De Regresión Lineal a Clasificación</h3>
+    <p>Problema: la regresión lineal puede dar valores fuera de [0,1], no sirve directamente como probabilidad. Solución: aplicar la <strong>función logística (sigmoide)</strong> a la salida lineal:</p>
+    <div class="f">σ(z) = 1 / (1 + e⁻ᶻ)     donde z = θᵀx
+─────────────────────────────────────────
+P(y=1 | x; θ) = σ(θᵀx)
+P(y=0 | x; θ) = 1 − σ(θᵀx)</div>
+    <ul>
+      <li>Salida en (0,1) → interpretable como probabilidad</li>
+      <li>Decisión: predecir clase 1 si P(y=1|x) ≥ 0.5</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📉 Función de Pérdida: Binary Cross-Entropy (BCE)</h3>
+    <div class="f">BCE(θ) = −(1/n) · ∑ᵢ [ yᵢ·log(f(xᵢ;θ)) + (1−yᵢ)·log(1−f(xᵢ;θ)) ]
+────────────────────────────────────────────────────────────────────
+Regla de actualización (descenso de gradiente):
+θ ← θ − α · ∇_θ BCE(θ)</div>
+    <div class="alert-base info"><span class="ico">💡</span>
+      <span>La función BCE es la misma <strong>entropía cruzada</strong> que verás en Deep Learning como función de pérdida para clasificación multiclase. Es uno de los puentes directos entre IA_i1 e IA_i2.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 Interpretación de Coeficientes (Odds Ratio)</h3>
+    <p>Los coeficientes de la regresión logística son lineales en escala de <strong>log-odds</strong>:</p>
+    <div class="f">log( P(y=1|x) / P(y=0|x) ) = θᵀx = θ₀ + θ₁x₁ + ... + θₐxₐ
+─────────────────────────────────────────────────────────────
+Odds Ratio (OR) = e^θⱼ  →  por cada unidad de aumento en xⱼ,
+los odds se multiplican por e^θⱼ (manteniendo el resto constante)</div>
+    <ul>
+      <li>OR &gt; 1 → la variable aumenta las probabilidades del evento</li>
+      <li>OR &lt; 1 → la variable reduce las probabilidades del evento</li>
+      <li>OR = 1 → la variable no tiene efecto</li>
+    </ul>
+    <h4>Condiciones para interpretación válida</h4>
+    <ul>
+      <li>Linealidad en el log-odds para variables continuas</li>
+      <li>No multicolinealidad entre features</li>
+      <li>Independencia de observaciones</li>
+      <li>OR es asociación, no causalidad</li>
+      <li>Muestra suficiente: ~10 eventos por variable incluida</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ S8: SVM ══ -->
+<section id="s8">
+  <div class="sec-hdr">
+    <div class="sico c3">⚔️</div>
+    <div>
+      <h2>Support Vector Machines (SVM)</h2>
+      <div class="meta">s5_c1 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 Idea Central: Máximo Margen</h3>
+    <p>Ante múltiples hiperplanos que separan dos clases con rendimiento perfecto en training, el SVM elige el que tiene el <strong>mayor margen</strong> (máxima distancia entre el hiperplano y los puntos más cercanos de cada clase).</p>
+    <div class="alert-base ok"><span class="ico">📐</span>
+      <span><strong>Intuición geométrica</strong>: mayor margen → mayor espacio para datos difíciles o nuevos → mejor generalización.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📐 Álgebra del Hiperplano</h3>
+    <div class="f">Hiperplano: y(x) = β₀ + βᵀx = 0
+─────────────────────────────────────────────────────────
+• β es ortogonal al hiperplano (demostrado por: βᵀ(xA−xB) = 0 ∀ xA,xB en el hiperplano)
+• Los coeficientes β indican la orientación del hiperplano
+• Distancia signada de un punto x al hiperplano:
+  d = (1/‖β‖) · (βᵀx + β₀)</div>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ Problema de Optimización — Hard-Margin SVM</h3>
+    <div class="f">min_{β,β₀}   (1/2) · ‖β‖²
+sujeto a:   yᵢ · (βᵀxᵢ + β₀) ≥ 1   para todo i
+─────────────────────────────────────────────────────────
+Minimizar ‖β‖ es equivalente a maximizar el margen M = 1/‖β‖
+Los puntos con yᵢ·(βᵀxᵢ+β₀) = 1 son los VECTORES DE SOPORTE</div>
+    <h4>Resolución mediante el Dual Lagrangiano</h4>
+    <ul>
+      <li>Condición KKT: <code>αᵢ · [yᵢ·(βᵀxᵢ+β₀) − 1] = 0</code></li>
+      <li>Si el punto queda <strong>sobre el margen</strong>: αᵢ &gt; 0 (es vector de soporte)</li>
+      <li>Si el punto queda <strong>fuera del margen</strong>: αᵢ = 0 (no influye en la solución)</li>
+      <li>La solución solo depende de los <strong>vectores de soporte</strong></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔓 Soft-Margin SVM (Datos No Linealmente Separables)</h3>
+    <div class="f">min_{β,β₀,ξ}   (1/2)·‖β‖² + C·∑ᵢ ξᵢ
+sujeto a:        yᵢ·(βᵀxᵢ+β₀) ≥ 1 − ξᵢ,   ξᵢ ≥ 0
+─────────────────────────────────────────────────────────
+ξᵢ : variables slack (permiten violar el margen con penalidad)
+C  : hiperparámetro que controla el tradeoff margen/errores</div>
+    <div class="tw"><table>
+      <thead><tr><th>Valor de C</th><th>Margen</th><th>Errores permitidos</th><th>Riesgo</th></tr></thead>
+      <tbody>
+        <tr><td>C grande (e.g. 1000)</td><td>Pequeño</td><td>Pocos</td><td>Overfitting</td></tr>
+        <tr><td>C pequeño (e.g. 0.01)</td><td>Grande</td><td>Muchos</td><td>Underfitting</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Conexión con la fórmula general de ML</h4>
+    <div class="f">J(W) = (1/2)·‖β‖²  +  C·∑ hinge_loss(yᵢ, f(xᵢ))
+          ─────────────   ─────────────────────────────────
+          Regularizador       Función de pérdida (Hinge loss)</div>
+    <p>El SVM es una instancia perfecta de la forma general <code>argmin λ·ℛ(W) + (1/n)·∑ℒ</code>.</p>
+  </div>
+</section>
+
+<!-- ══ S9: Kernel SVM ══ -->
+<section id="s9">
+  <div class="sec-hdr">
+    <div class="sico c2">🔮</div>
+    <div>
+      <h2>Kernel SVM</h2>
+      <div class="meta">s5_c2 · Denis Parra</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❓ El Problema de la No-Linealidad</h3>
+    <p>SVM es un clasificador lineal. ¿Qué hacer cuando los datos no son linealmente separables en el espacio original? Solución: <strong>transformar el espacio de características a una dimensión mayor</strong> donde sí sean linealmente separables.</p>
+    <p>Problema de la transformación directa: espacios de alta dimensionalidad son costosos en memoria/tiempo, y la distancia euclidiana pierde sentido (<strong>maldición de la dimensionalidad</strong>).</p>
+  </div>
+
+  <div class="card">
+    <h3>✨ El Kernel Trick</h3>
+    <div class="alert-base info"><span class="ico">🪄</span>
+      <span><strong>Teorema del Kernel:</strong> Si la matriz M de productos punto entre vectores transformados h(xᵢ)·h(xⱼ) es positiva definida, entonces existe una función K(xᵢ, xⱼ) que computa ese producto punto directamente en el espacio original, sin necesidad de conocer h(x).</span>
+    </div>
+    <div class="f">K(xᵢ, xⱼ) = ⟨h(xᵢ), h(xⱼ)⟩
+─────────────────────────────────────────────────────────────
+Clave: primero definimos K directamente en el espacio de entrada.
+Luego demostramos que existe algún h() tal que K(xᵢ,xⱼ) = ⟨h(xᵢ),h(xⱼ)⟩.
+Intuitivamente: un kernel mide la SIMILITUD entre dos vectores en un espacio transformado.</div>
+    <p>En el problema dual del SVM, los datos solo aparecen como <strong>productos punto</strong> → basta reemplazar <code>xᵢᵀxⱼ</code> por <code>K(xᵢ,xⱼ)</code>.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔧 Kernels Comunes</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Kernel</th><th>Fórmula</th><th>Espacio implícito</th><th>Hiperparámetro</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Lineal</strong></td><td><code>K(x,y) = xᵀy</code></td><td>Original (sin transformación)</td><td>Ninguno</td></tr>
+        <tr><td><strong>Polinomial</strong></td><td><code>K(x,y) = (xᵀy + c)ᵈ</code></td><td>Polinomios de grado d</td><td>d (grado), c</td></tr>
+        <tr><td><strong>RBF (Gaussiano)</strong></td><td><code>K(x,y) = exp(−γ·‖x−y‖²)</code></td><td>Dimensión infinita</td><td>γ (ancho del kernel)</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Efecto de γ en el Kernel RBF</h4>
+    <ul>
+      <li>γ pequeño → frontera de decisión casi lineal, poco flexible</li>
+      <li>γ grande → frontera muy flexible → riesgo de <strong>overfitting</strong></li>
+      <li>Seleccionar γ y C óptimos mediante validación cruzada</li>
+    </ul>
+    <div class="alert-base ok"><span class="ico">✅</span>
+      <span>SVMs con kernels continúan siendo relevantes y son de los algoritmos <em>off-the-shelf</em> con mejor rendimiento. Han perdido popularidad frente a Deep Learning y ensambles en la última década.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S10: Mapa integrador ══ -->
+<section id="s10">
+  <div class="sec-hdr">
+    <div class="sico c4">🗺️</div>
+    <div>
+      <h2>Mapa Conceptual Integrador</h2>
+      <div class="meta">Base para estudiar IA_i2</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔗 Cómo conecta IA_i1 con IA_i2</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Concepto de IA_i1</th><th>Dónde aparece en IA_i2</th></tr></thead>
+      <tbody>
+        <tr><td>Función objetivo general <code>argmin λℛ + (1/n)∑ℒ</code></td><td>Redes neuronales, entrenamiento DL, todo el marco de optimización</td></tr>
+        <tr><td>Descenso de gradiente (GD)</td><td>Backpropagation, SGD, Momentum en redes neuronales profundas</td></tr>
+        <tr><td>Binary Cross-Entropy (BCE)</td><td>Función de pérdida estándar en clasificación con softmax en DL</td></tr>
+        <tr><td>Overfitting / regularización</td><td>Dropout, Data Augmentation, batch normalization en CNN/DL</td></tr>
+        <tr><td>Bias-Variance tradeoff</td><td>Profundidad de redes, número de parámetros, técnicas de regularización DL</td></tr>
+        <tr><td>Feature space / embeddings</td><td>Representaciones jerárquicas en Deep Learning, capas ocultas como transformadores</td></tr>
+        <tr><td>Kernel trick (producto punto en espacio transformado)</td><td>Analogía con capas ocultas de redes neuronales como transformación del espacio</td></tr>
+        <tr><td>Validación cruzada / conjuntos de datos</td><td>Evaluación de modelos DL, Active Learning (pool etiquetado/no etiquetado)</td></tr>
+        <tr><td>Aprendizaje supervisado (pares x,y)</td><td>Base de DL supervisado; contrasta con Active Learning y RL</td></tr>
+        <tr><td>Information Gain / Entropía</td><td>Entropy Sampling en Active Learning, función de pérdida cross-entropy</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>📋 Resumen Ultra-Compacto por Tema</h3>
+    <div class="alert-base ok"><span class="ico">🤖</span>
+      <span><strong>ML</strong>: aprendizaje inductivo desde datos. Marco general: argmin J = λℛ + (1/n)∑ℒ. Tipos: supervisado, no supervisado, reforzado.</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">📦</span>
+      <span><strong>Datos</strong>: vectores de features + etiqueta. Train/Val/Test. Bias-Variance: underfitting (alto sesgo) vs. overfitting (alta varianza). Regularizador controla el tradeoff.</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">🌳</span>
+      <span><strong>Árboles</strong>: construcción recursiva maximizando Information Gain (entropía). Sesgo inductivo: árboles simples (Occam). Gran riesgo de overfitting → poda, max_depth.</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">🌲</span>
+      <span><strong>Ensambles</strong>: Bagging (RF, reduce varianza, paralelo), Boosting (XGBoost, reduce sesgo, secuencial), Stacking (meta-modelo). Modelos con baja correlación entre sí = clave.</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">📏</span>
+      <span><strong>Métricas</strong>: Accuracy (clases balanceadas), Precision/Recall (costos asimétricos), F1 (compromiso P-R), ROC-AUC (evaluación global del clasificador binario).</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">📈</span>
+      <span><strong>Reg. Lineal</strong>: espacio lineal, pérdida MSE (convexa). OLS: θ=(XᵀX)⁻¹Xᵀy. Grad. Desc.: θ←θ−α∇J. Coeficientes = efecto marginal manteniendo el resto constante.</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">🎲</span>
+      <span><strong>Reg. Logística</strong>: sigmoide sobre salida lineal → probabilidad. Pérdida BCE. Coeficientes en log-odds → exponenciar para OR. Clasificación binaria.</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">⚔️</span>
+      <span><strong>SVM</strong>: hiperplano de máximo margen. Hard-margin (lineal sep.), Soft-margin (C controla margen/errores). Solo los vectores de soporte definen la solución.</span>
+    </div>
+    <div class="alert-base ok"><span class="ico">🔮</span>
+      <span><strong>Kernel SVM</strong>: K(x,y) = ⟨h(x),h(y)⟩ sin calcular h(x). RBF → espacio infinito. γ controla flexibilidad. Kernel trick = operar en espacio de alta dimensión barato.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Preguntas Clave para Autoevaluarse</h3>
+    <ul>
+      <li>¿Cuál es la diferencia entre programar una solución y aprenderla con ML?</li>
+      <li>¿Qué representa cada término de <code>argmin λℛ(W) + (1/n)∑ℒ</code>?</li>
+      <li>¿Cómo detectas overfitting y underfitting? ¿Cómo los corriges?</li>
+      <li>¿Por qué el Information Gain elige la feature más "pura"?</li>
+      <li>¿Por qué Random Forest generaliza mejor que un árbol solo?</li>
+      <li>¿Cuándo usar Precision vs. Recall vs. F1?</li>
+      <li>¿Por qué usar BCE en logística y no MSE?</li>
+      <li>¿Qué son los vectores de soporte y qué rol juegan en el SVM?</li>
+      <li>¿Qué hace el kernel trick que no haría una transformación explícita?</li>
+      <li>¿Qué efecto tiene aumentar C en Soft-Margin SVM?</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:28px;background:var(--bg2);border-radius:12px;border:1px solid var(--bdr);color:var(--txt2);font-size:13px;margin-top:20px">
+  <p>Resumen elaborado a partir de los materiales del curso <strong>IIC2613 – Inteligencia Artificial · Interrogación 1</strong></p>
+  <p style="margin-top:4px">Pontificia Universidad Católica de Chile · Denis Parra · Dpto. Ciencia de la Computación</p>
+</div>
+
+</main>
+
+<button id="st" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const pct = (document.documentElement.scrollTop / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
+  document.getElementById('pbar').style.width = pct + '%';
+});
+// Active nav
+const secs = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.id; });
+  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+});
+</script>
+</body>
+</html>
