@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Ejercicios IA_i2 — IIC2613</title>
+<style>
+  :root {
+    --bg: #0f1117; --bg2: #1a1d27; --bg3: #22263a;
+    --accent: #6c8ef7; --accent2: #a78bfa; --accent3: #34d399;
+    --warn: #f59e0b; --danger: #f87171;
+    --text: #e2e8f0; --muted: #94a3b8; --border: #2d3748;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; }
+  
+  nav { position: fixed; top: 0; left: 0; width: 230px; height: 100vh; background: var(--bg2); border-right: 1px solid var(--border); overflow-y: auto; padding: 20px 0; z-index: 100; }
+  nav h2 { color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; padding: 0 16px 10px; }
+  nav a { display: block; padding: 7px 16px; color: var(--muted); text-decoration: none; font-size: 13px; border-left: 3px solid transparent; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-left-color: var(--accent); background: rgba(108,142,247,.08); }
+  nav .nav-section { margin-top: 16px; padding-top: 10px; border-top: 1px solid var(--border); }
+  
+  main { margin-left: 230px; padding: 40px 50px; max-width: 1000px; }
+  h1 { font-size: 2rem; color: var(--accent); margin-bottom: 8px; }
+  .subtitle { color: var(--muted); margin-bottom: 40px; font-size: 1rem; }
+  
+  h2.section-title { font-size: 1.5rem; color: var(--accent2); margin: 50px 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  h3 { color: var(--accent3); margin: 28px 0 12px; font-size: 1.1rem; }
+  h4 { color: var(--warn); margin: 20px 0 8px; font-size: 1rem; }
+  
+  p { margin-bottom: 12px; color: var(--text); }
+  ul, ol { margin: 8px 0 12px 24px; }
+  li { margin-bottom: 6px; }
+  
+  .ejercicio { background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+  .ejercicio.medio { border-left-color: var(--warn); }
+  .ejercicio.dificil { border-left-color: var(--danger); }
+  .ejercicio.examen { border-left-color: var(--accent2); }
+  
+  .ej-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .ej-num { background: var(--accent); color: #000; border-radius: 6px; padding: 2px 10px; font-weight: 700; font-size: 13px; }
+  .ejercicio.medio .ej-num { background: var(--warn); }
+  .ejercicio.dificil .ej-num { background: var(--danger); }
+  .ejercicio.examen .ej-num { background: var(--accent2); }
+  .dif-badge { font-size: 11px; color: var(--muted); background: var(--bg3); border-radius: 4px; padding: 2px 8px; }
+  .source-badge { font-size: 11px; color: var(--accent3); background: rgba(52,211,153,.1); border-radius: 4px; padding: 2px 8px; }
+  
+  .solucion { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; margin-top: 14px; }
+  .sol-toggle { width: 100%; text-align: left; background: none; border: none; color: var(--accent3); padding: 10px 16px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .sol-toggle:hover { color: #fff; }
+  .sol-body { padding: 0 16px 16px; display: none; }
+  .sol-body.open { display: block; }
+  .sol-body p, .sol-body ul, .sol-body ol { color: var(--text); }
+  
+  code { background: var(--bg3); color: #fbbf24; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 0.9em; }
+  pre { background: #111827; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; color: #e5e7eb; padding: 0; font-size: 14px; }
+  .kw { color: #c084fc; } .fn { color: #60a5fa; } .cm { color: #6b7280; font-style: italic; }
+  .str { color: #86efac; } .num { color: #fb923c; }
+  
+  .formula { background: #1e1b4b; border: 1px solid #4c1d95; border-radius: 6px; padding: 12px 18px; margin: 10px 0; font-family: monospace; color: #c4b5fd; }
+  
+  .tip { background: rgba(52,211,153,.08); border-left: 3px solid var(--accent3); padding: 10px 16px; border-radius: 4px; margin: 12px 0; font-size: 14px; }
+  .warn-box { background: rgba(245,158,11,.08); border-left: 3px solid var(--warn); padding: 10px 16px; border-radius: 4px; margin: 12px 0; font-size: 14px; }
+  
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+  th { background: var(--bg3); color: var(--accent); padding: 10px 14px; text-align: left; border: 1px solid var(--border); }
+  td { padding: 9px 14px; border: 1px solid var(--border); color: var(--text); }
+  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+  
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; font-size: 13px; }
+  .leg { display: flex; align-items: center; gap: 6px; }
+  .leg-dot { width: 12px; height: 12px; border-radius: 3px; }
+  
+  @media (max-width: 800px) { nav { display: none; } main { margin-left: 0; padding: 20px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <h2>📚 IIC2613 Ejercicios</h2>
+  <a href="#intro">Inicio</a>
+  <div class="nav-section">
+    <h2>🔵 Active Learning</h2>
+    <a href="#al-conceptos">Conceptos clave</a>
+    <a href="#al-ejercicios">Ejercicios</a>
+  </div>
+  <div class="nav-section">
+    <h2>🟠 Reinforcement Learning</h2>
+    <a href="#rl-conceptos">MDP y Q-learning</a>
+    <a href="#rl-ejercicios">Ejercicios</a>
+  </div>
+  <div class="nav-section">
+    <h2>🟣 Deep Learning / MLP</h2>
+    <a href="#dl-conceptos">Conceptos</a>
+    <a href="#dl-ejercicios">Ejercicios</a>
+  </div>
+  <div class="nav-section">
+    <h2>🟢 CNNs</h2>
+    <a href="#cnn-conceptos">Convolución</a>
+    <a href="#cnn-ejercicios">Ejercicios</a>
+  </div>
+  <div class="nav-section">
+    <h2>🔴 Razon. Deductivo</h2>
+    <a href="#rd-ejercicios">Ejercicios</a>
+  </div>
+  <div class="nav-section">
+    <h2>⚡ ASP / Clingo</h2>
+    <a href="#asp-conceptos">Definiciones</a>
+    <a href="#asp-basico">Ejercicios básicos</a>
+    <a href="#asp-intermedio">Intermedio</a>
+    <a href="#asp-examen">Nivel examen</a>
+  </div>
+</nav>
+
+<main>
+<h1>Guía de Ejercicios — IIC2613 IA</h1>
+<p class="subtitle">Interrogación 2 · Desde básico hasta nivel prueba · Todas las soluciones incluidas</p>
+
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:#6c8ef7"></div> Básico</div>
+  <div class="leg"><div class="leg-dot" style="background:#f59e0b"></div> Intermedio</div>
+  <div class="leg"><div class="leg-dot" style="background:#f87171"></div> Difícil</div>
+  <div class="leg"><div class="leg-dot" style="background:#a78bfa"></div> Nivel Examen</div>
+</div>
+
+<!-- ============================= ACTIVE LEARNING ============================= -->
+<h2 class="section-title" id="al-conceptos">🔵 Active Learning</h2>
+
+<h3>Resumen conceptual</h3>
+<p>Active Learning surge cuando etiquetar datos es costoso. El modelo elige cuáles ejemplos vale la pena etiquetar (consulta al oráculo) para maximizar el aprendizaje con el mínimo de etiquetas.</p>
+<table>
+  <tr><th>Concepto</th><th>Descripción</th></tr>
+  <tr><td>Pool-based AL</td><td>Hay un pool U de datos sin etiqueta. Se elige el más informativo para consultar.</td></tr>
+  <tr><td>Oráculo</td><td>Entidad que responde la etiqueta correcta (humano experto).</td></tr>
+  <tr><td>L / U</td><td>Conjunto etiquetado (labeled) / sin etiquetar (unlabeled)</td></tr>
+  <tr><td>Cold start</td><td>Problema inicial: sin datos etiquetados no se puede entrenar un modelo inicial.</td></tr>
+  <tr><td>Distributional shift</td><td>Si U no es representativo de la distribución real, el modelo puede sesgarse.</td></tr>
+</table>
+
+<h4>Estrategias de consulta</h4>
+<table>
+  <tr><th>Estrategia</th><th>Idea</th><th>Cuándo usar</th></tr>
+  <tr><td>Uncertainty / Least Confident</td><td>Consultar el ejemplo con menor confianza máxima: <code>1 - P(ŷ|x)</code></td><td>Clasificación binaria o multiclase</td></tr>
+  <tr><td>Margin Sampling</td><td>Menor diferencia entre la 1ª y 2ª clase más probable</td><td>Cuando hay clases "competidoras"</td></tr>
+  <tr><td>Entropy Sampling</td><td>Máxima entropía: <code>-Σ P(y|x)·log P(y|x)</code></td><td>Multiclase, captura toda la incertidumbre</td></tr>
+  <tr><td>Query by Committee (QbC)</td><td>Comité de modelos; consultar donde más desacuerdo hay</td><td>Cuando se pueden entrenar múltiples modelos</td></tr>
+  <tr><td>Core-Set</td><td>Seleccionar puntos que maximizan cobertura del espacio (min-max-distance)</td><td>DL, cuando la función de pérdida no da buena incertidumbre</td></tr>
+  <tr><td>Batch Mode</td><td>Seleccionar B ejemplos a la vez (no uno a uno)</td><td>Cuando etiquetar en batch es más eficiente</td></tr>
+</table>
+
+<h2 class="section-title" id="al-ejercicios">Ejercicios Active Learning</h2>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">AL-1</span><span class="dif-badge">Básico</span></div>
+  <p><strong>¿Qué es Active Learning y por qué es útil?</strong> Describe el ciclo básico de pool-based active learning y los 3 componentes principales.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Active Learning</strong> es un paradigma de aprendizaje supervisado donde el modelo puede consultar activamente las etiquetas de ejemplos seleccionados del pool sin etiquetar. Es útil cuando etiquetar datos es caro (médicos, expertos, etc.).</p>
+      <p><strong>Ciclo pool-based:</strong></p>
+      <ol>
+        <li>Entrenar modelo con conjunto etiquetado L (inicialmente pequeño).</li>
+        <li>Aplicar estrategia de consulta para seleccionar el ejemplo más informativo de U.</li>
+        <li>Consultar al oráculo por su etiqueta.</li>
+        <li>Agregar el ejemplo etiquetado a L y repetir.</li>
+      </ol>
+      <p><strong>3 componentes:</strong> (1) Modelo de aprendizaje, (2) Estrategia de consulta, (3) Oráculo.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">AL-2</span><span class="dif-badge">Básico</span></div>
+  <p><strong>Least Confident:</strong> Un clasificador da las siguientes probabilidades para 4 ejemplos sin etiquetar (clasificación binaria, clases {0,1}):</p>
+  <table>
+    <tr><th>Ejemplo</th><th>P(1|x)</th><th>P(0|x)</th></tr>
+    <tr><td>x1</td><td>0.95</td><td>0.05</td></tr>
+    <tr><td>x2</td><td>0.51</td><td>0.49</td></tr>
+    <tr><td>x3</td><td>0.70</td><td>0.30</td></tr>
+    <tr><td>x4</td><td>0.60</td><td>0.40</td></tr>
+  </table>
+  <p>¿Cuál elegiría Least Confident? ¿Y Margin Sampling? ¿Coinciden?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Least Confident</strong> = elige el de menor P(ŷ|x) = <code>1 - max(P(y|x))</code>:</p>
+      <ul>
+        <li>x1: 1 - 0.95 = 0.05</li>
+        <li>x2: 1 - 0.51 = <strong>0.49</strong> ← máximo</li>
+        <li>x3: 1 - 0.70 = 0.30</li>
+        <li>x4: 1 - 0.60 = 0.40</li>
+      </ul>
+      <p><strong>Margin Sampling</strong> = elige el de menor diferencia entre 1ª y 2ª clase:</p>
+      <ul>
+        <li>x1: 0.95 - 0.05 = 0.90</li>
+        <li>x2: 0.51 - 0.49 = <strong>0.02</strong> ← mínimo margen</li>
+        <li>x3: 0.70 - 0.30 = 0.40</li>
+        <li>x4: 0.60 - 0.40 = 0.20</li>
+      </ul>
+      <p><strong>Ambos eligen x2</strong>. Esto siempre ocurre en clasificación binaria porque Margin = |P(1) - P(0)| = |2·P(ŷ) - 1|, que es mínimo cuando P(ŷ) es mínimo.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">AL-3</span><span class="dif-badge">Intermedio</span></div>
+  <p><strong>Entropy Sampling:</strong> Un clasificador de 3 clases da las siguientes probabilidades:</p>
+  <table>
+    <tr><th>Ejemplo</th><th>P(c1|x)</th><th>P(c2|x)</th><th>P(c3|x)</th></tr>
+    <tr><td>x1</td><td>0.8</td><td>0.1</td><td>0.1</td></tr>
+    <tr><td>x2</td><td>0.34</td><td>0.33</td><td>0.33</td></tr>
+    <tr><td>x3</td><td>0.5</td><td>0.4</td><td>0.1</td></tr>
+  </table>
+  <p>Calcula la entropía de cada ejemplo y elige cuál consultar. Recuerda: H = -Σ p·log₂(p).</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><code>H(x1) = -(0.8·log₂(0.8) + 0.1·log₂(0.1) + 0.1·log₂(0.1))</code><br>
+      = -(0.8·(-0.322) + 0.1·(-3.322) + 0.1·(-3.322))<br>
+      = -(−0.257 − 0.332 − 0.332) = <strong>0.922 bits</strong></p>
+      <p><code>H(x2) = -(0.34·log₂(0.34) + 0.33·log₂(0.33) + 0.33·log₂(0.33))</code><br>
+      ≈ -(0.34·(-1.556) + 0.33·(-1.599) + 0.33·(-1.599))<br>
+      ≈ -(−0.529 − 0.528 − 0.528) = <strong>≈1.585 bits</strong> (≈ máximo para 3 clases)</p>
+      <p><code>H(x3) = -(0.5·log₂(0.5) + 0.4·log₂(0.4) + 0.1·log₂(0.1))</code><br>
+      = -(0.5·(-1) + 0.4·(-1.322) + 0.1·(-3.322))<br>
+      = -(−0.5 − 0.529 − 0.332) = <strong>1.361 bits</strong></p>
+      <p><strong>Se elige x2</strong> (mayor entropía = mayor incertidumbre). Tiene distribución casi uniforme entre las 3 clases.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">AL-4</span><span class="dif-badge">Intermedio</span><span class="source-badge">Ayudantía 5</span></div>
+  <p><strong>Query by Committee:</strong> Tienes un comité de 4 modelos que predicen las clases de 3 ejemplos:</p>
+  <table>
+    <tr><th></th><th>M1</th><th>M2</th><th>M3</th><th>M4</th></tr>
+    <tr><td>x1</td><td>A</td><td>A</td><td>A</td><td>B</td></tr>
+    <tr><td>x2</td><td>A</td><td>B</td><td>A</td><td>B</td></tr>
+    <tr><td>x3</td><td>B</td><td>B</td><td>B</td><td>B</td></tr>
+  </table>
+  <p>Usando vote entropy como medida de desacuerdo, ¿cuál ejemplo se consulta?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Vote entropy: H = -Σ (V(y)/|C|) · log(V(y)/|C|), donde V(y) = votos para clase y, |C| = total modelos.</p>
+      <ul>
+        <li><strong>x1:</strong> A=3/4, B=1/4 → H = -(0.75·log(0.75) + 0.25·log(0.25)) = 0.811 bits</li>
+        <li><strong>x2:</strong> A=2/4, B=2/4 → H = -(0.5·log(0.5) + 0.5·log(0.5)) = <strong>1.0 bit</strong> ← máximo</li>
+        <li><strong>x3:</strong> B=4/4 → H = 0 (unanimidad)</li>
+      </ul>
+      <p><strong>Se elige x2</strong> — máximo desacuerdo entre modelos (50-50).</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">AL-5</span><span class="dif-badge">Difícil</span></div>
+  <p><strong>Limitaciones de Active Learning:</strong> Explica los problemas de (a) cold start, (b) distributional shift, y (c) por qué Uncertainty Sampling puede fallar en redes neuronales profundas.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>(a) Cold start:</strong> Sin ejemplos etiquetados iniciales (L = ∅), no se puede entrenar ningún modelo para aplicar la estrategia de consulta. Solución: comenzar con algunas etiquetas aleatorias o usar clustering para seleccionar ejemplos representativos.</p>
+      <p><strong>(b) Distributional shift:</strong> Si el pool U no representa la distribución real de test, el modelo aprende bien sobre U pero generaliza mal. La selección activa puede exacerbar este bias: si el modelo siempre consulta en una región del espacio, ignora otras regiones importantes.</p>
+      <p><strong>(c) Uncertainty Sampling en DL:</strong> Las redes neuronales pueden dar probabilidades muy confiadas (alta P(ŷ)) incluso en ejemplos fuera de la distribución de entrenamiento, gracias al softmax. Un punto lejano a todos los datos de entrenamiento puede recibir P(ŷ) = 0.99. Por eso no es un buen indicador de incertidumbre real. Alternativas: Monte Carlo Dropout (estimar incertidumbre epistémica), Core-Set (geométrico, no depende de probabilidades).</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">AL-6</span><span class="dif-badge">Nivel Examen</span><span class="source-badge">Ayudantía 8</span></div>
+  <p><strong>Comparación de estrategias:</strong> Tenemos un clasificador binario sobre un espacio 2D. Los puntos en U son:</p>
+  <ul>
+    <li>Región A (frontera de decisión): P(1|x) ≈ 0.52, puntos densamente agrupados</li>
+    <li>Región B (lejos de datos): P(1|x) ≈ 0.95, punto aislado fuera del soporte de los datos</li>
+  </ul>
+  <p>Argumenta qué estrategia elegiría cada punto y cuál es más útil para el aprendizaje.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Uncertainty Sampling:</strong> Elegiría <strong>Región A</strong> (P(1|x)=0.52, incertidumbre ~0.48). La Región B tiene alta confianza (score bajo = 0.05). ✓ Correcto en este caso.</p>
+      <p><strong>Core-Set:</strong> Elegiría <strong>Región B</strong> si está lejos del centroide de los datos ya etiquetados (maximiza cobertura del espacio de features). Puede ser útil para representar mejor el espacio, pero si ese punto está realmente fuera de la distribución de interés, es una pérdida de presupuesto.</p>
+      <p><strong>¿Cuál es más útil?</strong> Depende del objetivo: si queremos <em>refinar la frontera de decisión</em>, Uncertainty Sampling (Región A) es mejor. Si queremos <em>cubrir mejor el espacio</em> (evitar distributional shift), Core-Set puede ser mejor. En la práctica, Región A es la respuesta correcta porque impacta directamente la frontera de decisión, que es lo que determina la accuracy del clasificador.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= REINFORCEMENT LEARNING ============================= -->
+<h2 class="section-title" id="rl-conceptos">🟠 Reinforcement Learning</h2>
+
+<h3>Resumen conceptual: MDP y Q-learning</h3>
+<p>Un <strong>MDP</strong> (Markov Decision Process) se define como <code>(S, A, r, p, γ)</code>:</p>
+<table>
+  <tr><th>Símbolo</th><th>Significado</th></tr>
+  <tr><td>S</td><td>Conjunto de estados</td></tr>
+  <tr><td>A</td><td>Conjunto de acciones</td></tr>
+  <tr><td>r(s,a,s')</td><td>Recompensa al pasar de s a s' con acción a</td></tr>
+  <tr><td>p(s'|s,a)</td><td>Probabilidad de transición</td></tr>
+  <tr><td>γ ∈ [0,1]</td><td>Factor de descuento (qué tanto importa el futuro)</td></tr>
+  <tr><td>π(s)</td><td>Política: qué acción tomar en cada estado</td></tr>
+  <tr><td>V(s)</td><td>Valor esperado del retorno al estar en s siguiendo π</td></tr>
+  <tr><td>Q(s,a)</td><td>Valor esperado del retorno al tomar a en s</td></tr>
+</table>
+
+<div class="formula">
+  Ecuación de Bellman: Q(s,a) = E[r + γ · max_a' Q(s',a')]<br><br>
+  Q-learning update: Q(s,a) ← Q(s,a) + α · [r + γ · max_a' Q(s',a') − Q(s,a)]<br><br>
+  Donde: α = learning rate, γ = descuento, r = recompensa inmediata
+</div>
+
+<h4>ε-greedy exploration</h4>
+<p>Con prob. ε: acción aleatoria (exploración). Con prob. 1-ε: mejor acción según Q (explotación).</p>
+
+<h2 class="section-title" id="rl-ejercicios">Ejercicios Reinforcement Learning</h2>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">RL-1</span><span class="dif-badge">Básico</span></div>
+  <p>Define los componentes de un MDP. ¿Qué distingue a RL de aprendizaje supervisado?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>MDP:</strong> (S, A, r, p, γ). El agente observa un estado s, toma una acción a, recibe una recompensa r y transiciona a s'.</p>
+      <p><strong>Diferencia clave:</strong> En aprendizaje supervisado, hay un "teacher" que da la respuesta correcta para cada ejemplo. En RL, solo hay una señal de recompensa (puede ser rara, tardía y ruidosa). El agente debe descubrir por sí mismo qué acciones son buenas mediante exploración. No hay un "correcto" instantáneo — la acción buena puede llevar a una recompensa recién muchos pasos después (crédito temporal).</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">RL-2</span><span class="dif-badge">Básico</span></div>
+  <p>¿Qué significa γ (factor de descuento)? ¿Qué sucede con γ=0 y γ=1?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>γ pondera la importancia de las recompensas futuras relativo a las inmediatas.</p>
+      <p><strong>γ = 0:</strong> El agente es completamente miope — solo le importa la recompensa inmediata. Política greedy de corto plazo. <em>Problema:</em> puede tomar acciones que arruinan el futuro.</p>
+      <p><strong>γ = 1:</strong> El agente valora igual recompensas presentes y futuras (suma no descontada). <em>Problema:</em> puede no converger si los episodios son infinitos y hay ciclos.</p>
+      <p><strong>Valor típico:</strong> γ = 0.9 ó 0.99 — equilibrio entre horizonte temporal y estabilidad.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">RL-3</span><span class="dif-badge">Intermedio</span></div>
+  <p><strong>Cálculo Q-learning:</strong> Considera un MDP con 2 estados (s1, s2) y 2 acciones (a1, a2). La Q-table actual es:</p>
+  <table>
+    <tr><th></th><th>a1</th><th>a2</th></tr>
+    <tr><td>s1</td><td>0.5</td><td>0.3</td></tr>
+    <tr><td>s2</td><td>1.0</td><td>0.8</td></tr>
+  </table>
+  <p>El agente está en s1, toma a2, recibe r=1.0, y llega a s2. Actualiza Q(s1,a2) con α=0.1, γ=0.9.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Fórmula: <code>Q(s,a) ← Q(s,a) + α·[r + γ·max_a' Q(s',a') − Q(s,a)]</code></p>
+      <p>max_a' Q(s2, a') = max(1.0, 0.8) = 1.0</p>
+      <p>Target: r + γ·max Q(s2) = 1.0 + 0.9·1.0 = 1.9</p>
+      <p>Error (TD): 1.9 − Q(s1,a2) = 1.9 − 0.3 = 1.6</p>
+      <p>Nueva Q(s1,a2) = 0.3 + 0.1·1.6 = 0.3 + 0.16 = <strong>0.46</strong></p>
+      <div class="tip">El Q sube porque la recompensa (1.9) fue mayor de lo esperado (0.3). El error TD positivo indica que la acción fue mejor de lo que el modelo pensaba.</div>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">RL-4</span><span class="dif-badge">Intermedio</span><span class="source-badge">Ayudantía 6</span></div>
+  <p><strong>ε-greedy:</strong> ¿Por qué es necesario explorar? ¿Qué pasa si ε=0 (solo explotación) desde el inicio?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Por qué explorar:</strong> La Q-table se inicializa con valores arbitrarios (típicamente 0). Si solo explotamos desde el principio, el agente siempre tomará la primera acción que parezca buena según esos valores iniciales, sin nunca descubrir que otras acciones pueden ser mejores. Se queda atrapado en un óptimo local.</p>
+      <p><strong>ε=0 desde el inicio:</strong> Si Q(s,a)=0 para todo (s,a) y el agente usa ε=0, elegirá la primera acción en el orden de desempate y <em>nunca la cambiará</em>. La Q-table se actualizará solo para esa trayectoria, dejando todo el resto inexplorado.</p>
+      <p><strong>Solución:</strong> Empezar con ε alto (mucha exploración) y decaerlo gradualmente (ε-decay). Así el agente explora al inicio y explota cuando ya tiene buenas estimaciones de Q.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">RL-5</span><span class="dif-badge">Difícil</span></div>
+  <p><strong>Convergencia y Deep Q-Networks:</strong> ¿Por qué Q-learning con Q-table no escala a espacios de estado grandes? ¿Qué introduce DQN y por qué mejora la estabilidad?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Problema de escala:</strong> Con una Q-table, necesitamos guardar Q(s,a) para cada par (s,a). Si el espacio de estados es continuo o muy grande (ej. el píxel-space de un videojuego: 84×84×4 = 28,224 dimensiones), la tabla es imposible de mantener o llenar.</p>
+      <p><strong>DQN:</strong> Usa una red neuronal Q(s,a;θ) que aproxima los Q-values. Dado el estado s como entrada, produce Q(s,a) para todas las acciones a simultáneamente.</p>
+      <p><strong>Dos trucos de estabilidad:</strong></p>
+      <ul>
+        <li><strong>Experience Replay:</strong> Guarda transiciones (s,a,r,s') en un buffer. En cada paso, entrena con un mini-batch aleatorio del buffer. Rompe correlaciones temporales y mejora la eficiencia de datos.</li>
+        <li><strong>Target Network:</strong> Usa una red "congelada" θ⁻ para calcular el target (r + γ·max Q(s',a';θ⁻)). Actualiza θ⁻ cada C pasos. Sin esto, el target cambia con cada update, haciendo el entrenamiento inestable.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">RL-6</span><span class="dif-badge">Nivel Examen</span><span class="source-badge">Ayudantía 8</span></div>
+  <p><strong>MDP completo:</strong> Un robot puede estar en 3 estados: A, B, C (meta). En cada estado puede ir Izquierda (I) o Derecha (D). Transiciones determinísticas: A→I=A, A→D=B, B→I=A, B→D=C, C es terminal. Recompensas: llegar a C = +10, cualquier otra transición = -1. γ=0.9.</p>
+  <p>Calcula Q(A,D) y Q(A,I) en estado estacionario (política óptima).</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>El camino óptimo desde A es: A→D→B→D→C, con recompensas -1, -1, +10.</p>
+      <p><strong>Q(B,D):</strong> Tomar D desde B lleva a C con r=+10. Estado terminal → V(C)=0.<br>Q(B,D) = 10 + γ·V(C) = 10 + 0.9·0 = <strong>10</strong></p>
+      <p><strong>Q(B,I):</strong> Tomar I desde B lleva a A con r=-1.<br>V(A) = max(Q(A,I), Q(A,D)) — lo calcularemos.<br>Q(B,I) = -1 + 0.9·V(A)</p>
+      <p><strong>Q(A,D):</strong> Lleva a B con r=-1.<br>V(B) = max(Q(B,I), Q(B,D)) = max(Q(B,I), 10) = 10<br>Q(A,D) = -1 + 0.9·10 = -1 + 9 = <strong>8</strong></p>
+      <p><strong>Q(A,I):</strong> Lleva a A con r=-1 (ciclo).<br>V(A) = max(Q(A,I), Q(A,D)) = max(Q(A,I), 8)<br>Q(A,I) = -1 + 0.9·V(A) = -1 + 0.9·8 = -1 + 7.2 = <strong>6.2</strong></p>
+      <p>Verificación: V(A) = max(8, 6.2) = 8. La política óptima: en A → D, en B → D.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= DEEP LEARNING / MLP ============================= -->
+<h2 class="section-title" id="dl-conceptos">🟣 Deep Learning / MLP</h2>
+
+<h3>Resumen conceptual</h3>
+<table>
+  <tr><th>Concepto</th><th>Descripción</th></tr>
+  <tr><td>Perceptrón</td><td>f(x) = σ(w·x + b). Una neurona.</td></tr>
+  <tr><td>MLP</td><td>Composición de capas: f(x) = σ(W₂·σ(W₁·x + b₁) + b₂)</td></tr>
+  <tr><td>ReLU</td><td>max(0, x). Evita vanishing gradient, no saturación positiva.</td></tr>
+  <tr><td>Sigmoid</td><td>1/(1+e⁻ˣ). Salida en (0,1), bueno para clasificación binaria.</td></tr>
+  <tr><td>Softmax</td><td>e^zᵢ / Σe^zⱼ. Distribución de probabilidad sobre K clases.</td></tr>
+  <tr><td>MSE</td><td>J = (1/n)·Σ(ŷ-y)². Regresión.</td></tr>
+  <tr><td>Cross-Entropy (BCE)</td><td>J = -Σ[y·log(ŷ) + (1-y)·log(1-ŷ)]. Clasificación.</td></tr>
+  <tr><td>Backpropagation</td><td>Regla de la cadena aplicada recursivamente para calcular gradientes.</td></tr>
+  <tr><td>SGD</td><td>Descenso de gradiente con mini-batches aleatorios.</td></tr>
+  <tr><td>Dropout</td><td>Apaga neuronas aleatoriamente durante entrenamiento. Regularización.</td></tr>
+</table>
+
+<h2 class="section-title" id="dl-ejercicios">Ejercicios Deep Learning / MLP</h2>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">DL-1</span><span class="dif-badge">Básico</span></div>
+  <p><strong>Pasada feedforward simple:</strong> Un perceptrón tiene pesos w=[2, -1] y bias b=0.5, con función de activación sigmoid. Calcula la salida para x=[1, 2].</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>z = w·x + b = 2·1 + (-1)·2 + 0.5 = 2 - 2 + 0.5 = <strong>0.5</strong></p>
+      <p>σ(z) = 1/(1+e⁻⁰·⁵) = 1/(1+0.6065) = 1/1.6065 ≈ <strong>0.622</strong></p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">DL-2</span><span class="dif-badge">Básico</span></div>
+  <p><strong>Funciones de activación:</strong> Calcula ReLU y sigmoid para z = {-3, 0, 1, 4}.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <table>
+        <tr><th>z</th><th>ReLU = max(0,z)</th><th>σ(z) = 1/(1+e⁻ᶻ)</th></tr>
+        <tr><td>-3</td><td>0</td><td>1/(1+e³) ≈ 0.047</td></tr>
+        <tr><td>0</td><td>0</td><td>0.5</td></tr>
+        <tr><td>1</td><td>1</td><td>1/(1+e⁻¹) ≈ 0.731</td></tr>
+        <tr><td>4</td><td>4</td><td>1/(1+e⁻⁴) ≈ 0.982</td></tr>
+      </table>
+      <p>ReLU para z negativo = 0 (zona de "muerte neuronal"). Sigmoid satura en ambos extremos.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">DL-3</span><span class="dif-badge">Intermedio</span></div>
+  <p><strong>MLP pasada feedforward completa:</strong> Red de 2 capas. Entrada: x=[1, 0].</p>
+  <p>Capa 1 (ReLU): W₁=[[1,-1],[2,0]], b₁=[0,1]</p>
+  <p>Capa 2 (sigmoid): W₂=[[-1,2]], b₂=[0]</p>
+  <p>Calcula la salida paso a paso.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Capa 1:</strong></p>
+      <p>z₁ = W₁·x + b₁</p>
+      <p>z₁[0] = 1·1 + (-1)·0 + 0 = 1 → ReLU(1) = 1</p>
+      <p>z₁[1] = 2·1 + 0·0 + 1 = 3 → ReLU(3) = 3</p>
+      <p>h₁ = [1, 3]</p>
+      <p><strong>Capa 2:</strong></p>
+      <p>z₂ = W₂·h₁ + b₂ = -1·1 + 2·3 + 0 = -1 + 6 = 5</p>
+      <p>σ(5) = 1/(1+e⁻⁵) ≈ 1/(1+0.0067) ≈ <strong>0.993</strong></p>
+      <div class="tip">La red predice con alta confianza la clase positiva para x=[1,0].</div>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">DL-4</span><span class="dif-badge">Intermedio</span></div>
+  <p><strong>Softmax y Cross-Entropy:</strong> Un clasificador de 3 clases produce logits z=[2, 1, 0]. Calcula softmax y luego la cross-entropy si la clase correcta es la 0.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Softmax:</strong></p>
+      <p>e²=7.389, e¹=2.718, e⁰=1.000. Suma=11.107</p>
+      <p>P(c0)=7.389/11.107 ≈ 0.665, P(c1)=2.718/11.107 ≈ 0.245, P(c2)=1.000/11.107 ≈ 0.090</p>
+      <p><strong>Cross-Entropy:</strong> CE = -log(P(clase_correcta)) = -log(0.665) ≈ <strong>0.408</strong></p>
+      <p>Si la clase correcta fuera la 2: CE = -log(0.090) ≈ 2.408 (pérdida mayor = más error).</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">DL-5</span><span class="dif-badge">Difícil</span><span class="source-badge">Ayudantía 7</span></div>
+  <p><strong>Backpropagation:</strong> Para la red del ejercicio DL-3, calcula ∂L/∂W₂ si L = CE = -log(ŷ) con ŷ=0.993 y la clase correcta es 1.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>L = -log(ŷ) → ∂L/∂ŷ = -1/ŷ ≈ -1/0.993 ≈ -1.007</p>
+      <p>σ'(z) = σ(z)·(1-σ(z)) = 0.993·0.007 ≈ 0.00695</p>
+      <p>∂L/∂z₂ = ∂L/∂ŷ · ∂ŷ/∂z₂ = -1.007 · 0.00695 ≈ -0.007 (esto es δ₂)</p>
+      <p>∂L/∂W₂ = δ₂ · h₁ᵀ = -0.007 · [1, 3] = <strong>[-0.007, -0.021]</strong></p>
+      <p>Interpretación: Los gradientes son pequeños porque la red ya predice bien (0.993) — sigmoid satura, gradiente casi nulo.</p>
+      <div class="warn-box">Este es el problema de vanishing gradient con sigmoid en redes profundas. ReLU no satura para valores positivos, por eso se prefiere en capas ocultas.</div>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">DL-6</span><span class="dif-badge">Difícil</span></div>
+  <p><strong>Regularización:</strong> Explica dropout y weight decay. ¿Cómo reducen el sobreajuste? ¿Se usan en test?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Dropout:</strong> Durante entrenamiento, cada neurona se "apaga" con probabilidad p (típico p=0.5). Efecto: la red no puede depender de ninguna neurona individual → aprende representaciones más robustas y distribuidas. En test: se desactiva el dropout y se escalan los pesos por (1-p) para compensar. No se usa en inferencia.</p>
+      <p><strong>Weight decay (L2 regularización):</strong> Agrega λ||W||² a la función de pérdida. En el gradiente: ∂L/∂W incluye un término +λW que "empuja" los pesos hacia cero. Penaliza pesos grandes, prefiriendo soluciones más simples. Equivale a prior Gaussiano sobre los pesos (Bayesiano). Sí afecta el entrenamiento, pero en test no se necesita ajuste.</p>
+      <p><strong>En test:</strong> Dropout OFF, weight decay no activo (solo afecta la función de pérdida durante el entrenamiento).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= CNNs ============================= -->
+<h2 class="section-title" id="cnn-conceptos">🟢 Redes Neuronales Convolucionales (CNNs)</h2>
+
+<h3>Fórmulas clave</h3>
+<div class="formula">
+Dimensión de salida de una convolución:
+  H_out = (H_in - F + 2P) / S + 1
+  W_out = (W_in - F + 2P) / S + 1
+
+Parámetros de una capa conv:
+  Params = F × F × C_in × K + K   (con bias)
+  Donde: F=tamaño filtro, C_in=canales entrada, K=cantidad de filtros
+
+Max Pooling (sin parámetros):
+  H_out = (H_in - P_size) / stride + 1
+</div>
+
+<h2 class="section-title" id="cnn-ejercicios">Ejercicios CNNs</h2>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">CNN-1</span><span class="dif-badge">Básico</span></div>
+  <p><strong>Convolución manual:</strong> Aplica el filtro K a la imagen I (sin padding, stride=1):</p>
+  <p>I (4×4):<br><code>1 2 3 4 / 5 6 7 8 / 9 10 11 12 / 13 14 15 16</code></p>
+  <p>K (2×2): <code>1 0 / 0 -1</code></p>
+  <p>Calcula el feature map resultante.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Dimensión salida: (4-2)/1 + 1 = 3 → salida 3×3</p>
+      <p>Operación: suma elemento a elemento entre el filtro y cada región 2×2 de I.</p>
+      <table>
+        <tr><th>Posición</th><th>Región de I</th><th>Producto</th><th>Suma</th></tr>
+        <tr><td>(0,0)</td><td>1,2,5,6</td><td>1·1 + 2·0 + 5·0 + 6·(-1)</td><td><strong>-5</strong></td></tr>
+        <tr><td>(0,1)</td><td>2,3,6,7</td><td>2·1 + 3·0 + 6·0 + 7·(-1)</td><td><strong>-5</strong></td></tr>
+        <tr><td>(0,2)</td><td>3,4,7,8</td><td>3·1 + 4·0 + 7·0 + 8·(-1)</td><td><strong>-5</strong></td></tr>
+        <tr><td>(1,0)</td><td>5,6,9,10</td><td>5·1 + 6·0 + 9·0 + 10·(-1)</td><td><strong>-5</strong></td></tr>
+        <tr><td>(1,1)</td><td>6,7,10,11</td><td>6-11</td><td><strong>-5</strong></td></tr>
+        <tr><td>(1,2)</td><td>7,8,11,12</td><td>7-12</td><td><strong>-5</strong></td></tr>
+        <tr><td>(2,0)</td><td>9,10,13,14</td><td>9-14</td><td><strong>-5</strong></td></tr>
+        <tr><td>(2,1)</td><td>10,11,14,15</td><td>10-15</td><td><strong>-5</strong></td></tr>
+        <tr><td>(2,2)</td><td>11,12,15,16</td><td>11-16</td><td><strong>-5</strong></td></tr>
+      </table>
+      <p>Feature map resultante (3×3): todos -5. Esto ocurre porque I tiene gradiente constante (+4 en ambas dimensiones) y el filtro K detecta diferencias diagonales.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">CNN-2</span><span class="dif-badge">Básico</span></div>
+  <p><strong>Cálculo de dimensiones:</strong> Imagen entrada: 32×32×3. Capa conv: 16 filtros de 5×5, stride=1, padding=0. ¿Cuál es la dimensión del feature map de salida? ¿Cuántos parámetros tiene esta capa?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Dimensiones:</strong> H_out = (32 - 5 + 0)/1 + 1 = 28. W_out = 28. Canales = K = 16.</p>
+      <p>Salida: <strong>28×28×16</strong></p>
+      <p><strong>Parámetros:</strong> F×F×C_in×K + K = 5×5×3×16 + 16 = 1200 + 16 = <strong>1,216</strong></p>
+      <div class="tip">Comparar: una capa fully connected de 32×32×3=3072 a 28×28×16=12544 neuronas tendría 3072×12544 ≈ 38.5M parámetros. La CNN tiene 1,216. ¡Reducción de ×31,600!</div>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">CNN-3</span><span class="dif-badge">Intermedio</span></div>
+  <p><strong>Max Pooling:</strong> Feature map 4×4 después de ReLU. Aplica max pooling 2×2 con stride=2:</p>
+  <pre><code>3  1  2  4
+0  5  6  1
+2  3  1  0
+4  2  8  3</code></pre>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Dimensión salida: (4-2)/2 + 1 = 2. Salida 2×2.</p>
+      <table>
+        <tr><th>Región</th><th>Valores</th><th>Max</th></tr>
+        <tr><td>Top-left 2×2</td><td>3,1,0,5</td><td><strong>5</strong></td></tr>
+        <tr><td>Top-right 2×2</td><td>2,4,6,1</td><td><strong>6</strong></td></tr>
+        <tr><td>Bottom-left 2×2</td><td>2,3,4,2</td><td><strong>4</strong></td></tr>
+        <tr><td>Bottom-right 2×2</td><td>1,0,8,3</td><td><strong>8</strong></td></tr>
+      </table>
+      <p>Resultado: [[5,6],[4,8]]</p>
+      <p>El pooling reduce dimensiones (invarianza traslacional) y extrae las activaciones más fuertes.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">CNN-4</span><span class="dif-badge">Intermedio</span></div>
+  <p><strong>Arquitectura completa:</strong> Imagen 28×28×1. Arquitectura:</p>
+  <ol>
+    <li>Conv: 8 filtros 3×3, stride=1, padding=1</li>
+    <li>MaxPool: 2×2, stride=2</li>
+    <li>Conv: 16 filtros 3×3, stride=1, padding=0</li>
+    <li>Flatten → FC: 10 salidas</li>
+  </ol>
+  <p>Calcula las dimensiones después de cada capa y los parámetros de cada capa conv.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <table>
+        <tr><th>Capa</th><th>Cálculo</th><th>Salida</th><th>Parámetros</th></tr>
+        <tr><td>Input</td><td>—</td><td>28×28×1</td><td>0</td></tr>
+        <tr><td>Conv1 (8 filtros 3×3, P=1, S=1)</td><td>(28-3+2)/1+1=28</td><td>28×28×8</td><td>3×3×1×8+8=80</td></tr>
+        <tr><td>MaxPool 2×2 S=2</td><td>(28-2)/2+1=14</td><td>14×14×8</td><td>0</td></tr>
+        <tr><td>Conv2 (16 filtros 3×3, P=0, S=1)</td><td>(14-3)/1+1=12</td><td>12×12×16</td><td>3×3×8×16+16=1168</td></tr>
+        <tr><td>Flatten</td><td>12×12×16=2304</td><td>2304</td><td>0</td></tr>
+        <tr><td>FC</td><td>2304→10</td><td>10</td><td>2304×10+10=23050</td></tr>
+      </table>
+      <p><strong>Total parámetros:</strong> 80 + 0 + 1168 + 0 + 23050 = <strong>24,298</strong></p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">CNN-5</span><span class="dif-badge">Difícil</span><span class="source-badge">Ayudantía 7</span></div>
+  <p><strong>¿Por qué CNNs en vez de MLPs para imágenes?</strong> Explica los 3 principios clave de diseño de una CNN y cómo cada uno ayuda.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>1. Localidad (filtros locales):</strong> Los patrones visuales (bordes, texturas) son locales — un píxel en la esquina superior no depende de uno en la esquina inferior. Filtros de 3×3 ó 5×5 capturan patrones locales, reduciendo drásticamente parámetros vs. fully connected.</p>
+      <p><strong>2. Weight sharing (compartición de pesos):</strong> El mismo filtro se aplica a toda la imagen. Un detector de bordes horizontales funciona en cualquier parte de la imagen. Esto implementa <em>invarianza traslacional</em> y reduce parámetros en un factor del tamaño de la imagen.</p>
+      <p><strong>3. Jerarquía de features:</strong> Capas iniciales detectan patrones simples (bordes, colores). Capas profundas combinan estos en patrones más complejos (ojos, ruedas, caras). Similar a la corteza visual (Hubel y Wiesel, 1960s).</p>
+      <p><strong>Resultado:</strong> Una CNN para imágenes 256×256 tiene órdenes de magnitud menos parámetros que un MLP equivalente, generaliza mejor, y respeta la estructura espacial de los datos.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">CNN-6</span><span class="dif-badge">Nivel Examen</span></div>
+  <p><strong>AlexNet y transfer learning:</strong> Explica por qué AlexNet (2012) fue un hito. ¿Qué técnicas introdujo? ¿En qué consiste transfer learning y cuándo es útil?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>AlexNet fue un hito porque:</strong></p>
+      <ul>
+        <li>Usó GPUs para entrenamiento (primer trabajo a gran escala)</li>
+        <li>Introdujo ReLU en vez de sigmoid/tanh → entrenamiento 6× más rápido</li>
+        <li>Usó Dropout para regularización</li>
+        <li>Data augmentation (5 crops × 2 flips = 10× más datos)</li>
+        <li>Entrenó sobre ImageNet (1.2M imágenes) — escala sin precedentes</li>
+        <li>Error top-5 de 15.3% vs 26% del segundo lugar → brecha enorme</li>
+      </ul>
+      <p><strong>Transfer learning:</strong> Tomar una red preentrenada en un dataset grande (ImageNet) y re-usarla para una tarea nueva con pocos datos. Las capas iniciales aprenden features genéricas (bordes, texturas) transferibles a cualquier dominio visual.</p>
+      <p><strong>Estrategias:</strong> (a) Feature extractor: congelar capas conv, entrenar solo el clasificador final. (b) Fine-tuning: descongelar capas más profundas y re-entrenar con learning rate bajo.</p>
+      <p><strong>Cuándo usar:</strong> Cuando tienes pocos datos de la tarea objetivo pero hay un dataset grande relacionado. Evita sobreajuste y acelera convergencia.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= RAZONAMIENTO DEDUCTIVO ============================= -->
+<h2 class="section-title" id="rd-ejercicios">🔴 Razonamiento Deductivo</h2>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">RD-1</span><span class="dif-badge">Básico</span></div>
+  <p>¿Qué es razonamiento deductivo? Distingue Sistema 1 vs. Sistema 2 (Kahneman).</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Razonamiento deductivo (Russell & Norvig):</strong> Proceso por el cual se derivan afirmaciones que se concluyen lógicamente a partir de una base de conocimiento (premisas).</p>
+      <p><strong>Sistema 1:</strong> Rápido, automático, sin esfuerzo consciente. Ej: reconocer una cara, leer texto familiar.</p>
+      <p><strong>Sistema 2:</strong> Lento, deliberado, con esfuerzo consciente. Ej: resolver 17×24, demostrar un teorema, jugar ajedrez.</p>
+      <p>El <strong>razonamiento deductivo es Sistema 2</strong> — requiere seguir reglas lógicas paso a paso. La IA busca automatizar esto.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">RD-2</span><span class="dif-badge">Intermedio</span></div>
+  <p>El problema MAPF (Multi-Agent Path Finding) es NP-completo. ¿Qué significa esto? ¿Por qué es un problema de razonamiento deductivo?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>NP-completo:</strong> No se conoce algoritmo de tiempo polinomial. El problema de decidir si existe solución de costo ≤ k es NP-completo (Nebel, 2019). Esto implica que en el peor caso, el tiempo de resolución crece exponencialmente con el tamaño.</p>
+      <p><strong>MAPF como deducción:</strong> Dados un mapa (predicados de adyacencia), posiciones iniciales/finales de cada agente, y restricciones de tiempo (no colisión), el problema es <em>deducir</em> si existe una secuencia de movimientos (una "prueba") que satisfaga todas las restricciones. El set de premisas Σ = {mapa, posiciones, restricciones}, y la conclusión α = "existe plan de costo ≤ k".</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">RD-3</span><span class="dif-badge">Difícil</span></div>
+  <p>Ordena de menor a mayor complejidad: EXP, NP, PSPACE, 2-EXP. ¿Cuál es la relación de inclusión entre estas clases?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Orden: NP ⊆ PSPACE ⊆ EXP ⊆ EXPSPACE ⊆ 2-EXP</p>
+      <table>
+        <tr><th>Clase</th><th>Recurso</th><th>Ejemplo en IA</th></tr>
+        <tr><td>P</td><td>Tiempo polinomial</td><td>Algoritmos de búsqueda simple</td></tr>
+        <tr><td>NP</td><td>Verificación polinomial</td><td>SAT, MAPF</td></tr>
+        <tr><td>PSPACE</td><td>Espacio polinomial</td><td>Planificación con QBF</td></tr>
+        <tr><td>EXP</td><td>Tiempo exponencial</td><td>Planificación general</td></tr>
+        <tr><td>EXPSPACE</td><td>Espacio exponencial</td><td>Lógica de primer orden decidible</td></tr>
+        <tr><td>2-EXP</td><td>Tiempo 2^2^n</td><td>Lógicas modales muy expresivas</td></tr>
+      </table>
+      <p>Se sabe que P ⊊ EXP (distinción estricta probada). Las demás inclusiones se conjeturan estrictas pero no están probadas (P vs NP es uno de los Problemas del Milenio).</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================= ASP / CLINGO ============================= -->
+<h2 class="section-title" id="asp-conceptos">⚡ ASP / Clingo — Definiciones Formales</h2>
+
+<h3>Definiciones clave (de la Guía de Ejercicios)</h3>
+<table>
+  <tr><th>Concepto</th><th>Definición</th></tr>
+  <tr><td>Átomo</td><td>p(c₁,...,cₙ) con p predicado de aridad n y cᵢ constantes</td></tr>
+  <tr><td>Regla</td><td>Head :- Body. Si Body⊆M → Head∩M≠∅</td></tr>
+  <tr><td>Hecho</td><td>Regla con Body vacío: p(a). equivale a {p(a)} :- {}</td></tr>
+  <tr><td>Constraint</td><td>:- Body. Regla con Head vacío. Elimina modelos donde Body⊆M</td></tr>
+  <tr><td>Modelo</td><td>M es modelo si toda regla con Body⊆M tiene Head∩M≠∅</td></tr>
+  <tr><td>Modelo minimal</td><td>M es modelo y ningún subconjunto propio de M también lo es</td></tr>
+  <tr><td>Answer set</td><td>Modelo minimal del programa. Puede haber 0, 1 o varios.</td></tr>
+</table>
+
+<h3>Sintaxis Clingo</h3>
+<pre><code><span class="cm">% Hechos</span>
+gato(tom). perro(rex). humano(jorge).
+
+<span class="cm">% Reglas (Head :- Body)</span>
+mortal(X) :- humano(X).       <span class="cm">% X en mayúscula = variable</span>
+amigos(X,Y) :- conoce(X,Y), conoce(Y,X).
+
+<span class="cm">% Regla disyuntiva (Head tiene >1 átomo)</span>
+gato(X) ; perro(X) :- animal(X).
+
+<span class="cm">% Constraint (elimina modelos)</span>
+:- gato(X), perro(X).         <span class="cm">% nada puede ser gato Y perro</span>
+
+<span class="cm">% Cardinality constraint</span>
+1{color(X,rojo);color(X,azul)}1 :- objeto(X).  <span class="cm">% exactamente 1 color</span>
+
+<span class="cm">% Negación por defecto (not)</span>
+libre(X) :- celda(X), not ocupado(X).
+
+<span class="cm">% Minimización</span>
+#minimize{1,X : asignado(X, equipo_mono)}.
+
+<span class="cm">% Show</span>
+#show color/2.</code></pre>
+
+<h3>Reducción del programa (ΠX)</h3>
+<p>Para verificar si X es answer set, se calcula el programa reducido ΠX:</p>
+<ol>
+  <li>Para cada regla con <code>not a</code> en el cuerpo: si <code>a ∈ X</code>, eliminar la regla; si <code>a ∉ X</code>, eliminar <code>not a</code> del cuerpo.</li>
+  <li>ΠX no tiene negación. X es answer set si X es modelo minimal de ΠX.</li>
+</ol>
+
+<h2 class="section-title" id="asp-basico">Ejercicios ASP — Básicos (de la Guía Oficial)</h2>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">ASP-1</span><span class="dif-badge">Básico</span><span class="source-badge">Guía ASP Ej.1</span></div>
+  <p>Calcula el número de átomos que se pueden formar con un predicado de aridad 3 y 10 constantes.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Con aridad 3, cada átomo es p(c₁, c₂, c₃) donde cada cᵢ ∈ {c1,...,c10}.</p>
+      <p>Número de átomos = 10³ = <strong>1,000</strong> (con repetición permitida, ya que c1,c2,c3 pueden repetirse).</p>
+      <div class="tip">Si los cᵢ deben ser todos distintos: 10·9·8 = 720. Pero la definición formal permite repetición.</div>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">ASP-2</span><span class="dif-badge">Básico</span><span class="source-badge">Guía ASP Ej.2</span></div>
+  <p>Dado el programa:</p>
+  <pre><code>mojada(mochila) :- afuera(casa, mochila), llueve.</code></pre>
+  <p>(a) Identifica predicados (nombre y aridad) y constantes. (b) ¿Qué otros átomos se pueden formar? (c) ¿Qué expresa el programa?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>(a) Predicados:</strong></p>
+      <ul>
+        <li><code>mojada</code> — aridad 1</li>
+        <li><code>afuera</code> — aridad 2</li>
+        <li><code>llueve</code> — aridad 0 (átomo proposicional)</li>
+      </ul>
+      <p><strong>Constantes:</strong> {mochila, casa}</p>
+      <p><strong>(b) Otros átomos posibles:</strong></p>
+      <ul>
+        <li>Con <code>mojada/1</code>: mojada(casa)</li>
+        <li>Con <code>afuera/2</code>: afuera(mochila, casa), afuera(mochila, mochila), afuera(casa, casa)</li>
+        <li>Con <code>llueve/0</code>: solo llueve (ya existe)</li>
+      </ul>
+      <p><strong>(c) Interpretación:</strong> "Si la mochila está afuera de la casa Y está lloviendo, entonces la mochila está mojada."</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">ASP-3</span><span class="dif-badge">Básico</span><span class="source-badge">Guía ASP Ej.3</span></div>
+  <p>Escribe cada regla del siguiente programa en forma matemática Head :- Body (como conjuntos):</p>
+  <pre><code>p; q :- r.
+r.
+:- q.</code></pre>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Regla 1: <code>{p, q} :- {r}</code> — si r es verdadero, al menos uno de {p, q} debe ser verdadero.</p>
+      <p>Regla 2: <code>{r} :- {}</code> — el cuerpo es el conjunto vacío, siempre se aplica. r es un hecho.</p>
+      <p>Regla 3: <code>{} :- {q}</code> — constraint. Si q∈M, entonces {}∩M = ∅ = ∅. ¡Nunca se satisface! Así que q no puede estar en ningún answer set.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio">
+  <div class="ej-header"><span class="ej-num">ASP-4</span><span class="dif-badge">Básico</span><span class="source-badge">Guía ASP Ej.4</span></div>
+  <p>Para el programa:</p>
+  <pre><code>p :- r.
+t.</code></pre>
+  <p>Demuestra que {p,t} y {t} son modelos, pero solo {t} es answer set.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>¿{p,t} es modelo?</strong> Chequeamos cada regla:</p>
+      <ul>
+        <li>Regla 1: {p:-r}. Body={r}. r ∉ {p,t}, así que Body ⊄ M. La regla no se activa — vacuamente satisfecha. ✓</li>
+        <li>Regla 2: {t:-∅}. Body=∅ ⊆ {p,t}. Head={t}, t ∈ {p,t}. ✓</li>
+      </ul>
+      <p>{p,t} es modelo. ✓</p>
+      <p><strong>¿{t} es modelo?</strong></p>
+      <ul>
+        <li>Regla 1: r ∉ {t}, no se activa. ✓</li>
+        <li>Regla 2: t ∈ {t}. ✓</li>
+      </ul>
+      <p>{t} es modelo. ✓</p>
+      <p><strong>¿{p,t} es answer set?</strong> No, porque {t} ⊊ {p,t} y {t} también es modelo. {p,t} no es minimal.</p>
+      <p><strong>¿{t} es answer set?</strong> Debemos verificar que no hay subconjunto propio de {t} que sea modelo. Subconjuntos propios: {∅}. La regla {t:-∅} requiere que ∅ satisfaga t ∈ M, pero t ∉ ∅. Así que ∅ no es modelo. Por lo tanto {t} es minimal → <strong>es answer set</strong>.</p>
+      <p><strong>¿Todo modelo debe contener t?</strong> Sí. La regla t:- tiene body vacío, por lo que siempre se activa. Todo modelo M debe satisfacer t ∈ M.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">ASP-5</span><span class="dif-badge">Intermedio</span><span class="source-badge">Guía ASP Ej.5</span></div>
+  <p>Encuentra todos los answer sets de:</p>
+  <pre><code>p; q.
+r :- p.</code></pre>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Posibles candidatos: {p,r}, {q}, {p,q,r}, {p,q}, {r}, etc.</p>
+      <p><strong>Checkeamos modelos:</strong></p>
+      <p>Regla 1: {p;q} :- {}. Como body=∅, siempre activa. Necesita p∈M o q∈M.</p>
+      <p>Regla 2: {r} :- {p}. Si p∈M, entonces r∈M.</p>
+      <p>Candidatos válidos (deben tener p o q, y si tienen p deben tener r):</p>
+      <ul>
+        <li>{q}: Regla1: q∈{q}✓. Regla2: p∉{q}, no activa✓. Es modelo.</li>
+        <li>{p,r}: Regla1: p∈{p,r}✓. Regla2: p∈{p,r}→r∈{p,r}✓. Es modelo.</li>
+        <li>{p,q,r}: Modelo también (superconjunto de ambos).</li>
+      </ul>
+      <p><strong>Minimalidad:</strong></p>
+      <ul>
+        <li>{q}: ∅ no es modelo (no satisface regla1). {q} es minimal → <strong>answer set</strong>.</li>
+        <li>{p,r}: Subconjuntos: {p} — regla2: p∈{p}→r debe estar, pero r∉{p}. No es modelo. {r} — regla1: ni p ni q en {r}. No es modelo. {p,r} es minimal → <strong>answer set</strong>.</li>
+        <li>{p,q,r}: {q} es subconjunto propio y es modelo → no minimal, no es answer set.</li>
+      </ul>
+      <p><strong>Answer sets: {q} y {p,r}</strong></p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">ASP-6</span><span class="dif-badge">Intermedio</span><span class="source-badge">Guía ASP Ej.6</span></div>
+  <p>Demuestra que el programa tiene exactamente 2 answer sets:</p>
+  <pre><code>p; q :- r.
+r.</code></pre>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>r es un hecho → r ∈ M para todo modelo M.</p>
+      <p>Regla 1: r ∈ M → activa → p∈M o q∈M.</p>
+      <p><strong>Candidatos mínimos:</strong></p>
+      <ul>
+        <li>{r,p}: Regla1: p∈M✓. Regla2: r∈M✓. Es modelo. Subconjunto {r}: no satisface regla1 (ni p ni q). {p}: no satisface regla2 (r no está). → {r,p} es minimal → <strong>answer set</strong>.</li>
+        <li>{r,q}: Simétrico. {r}: falla regla1. {q}: falla regla2. → {r,q} es minimal → <strong>answer set</strong>.</li>
+        <li>{r,p,q}: {r,p} ⊊ {r,p,q} y {r,p} es modelo → no minimal.</li>
+      </ul>
+      <p>No puede haber más answer sets porque cualquier modelo debe contener r, y debe contener p o q (o ambos), pero {r,p,q} no es minimal. Los únicos modelos minimales son {r,p} y {r,q}.</p>
+      <p><strong>Exactamente 2 answer sets: {r,p} y {r,q}</strong> ✓</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">ASP-7</span><span class="dif-badge">Intermedio</span><span class="source-badge">Guía ASP Ej.7</span></div>
+  <p>Demuestra que si el programa contiene la regla <code>:- p</code>, entonces ningún answer set M contiene p.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>La regla <code>:- p</code> se escribe como <code>{} :- {p}</code>.</p>
+      <p>Por la definición de modelo: si p ∈ M (body ⊆ M), entonces Head ∩ M ≠ ∅. Pero Head = ∅, entonces ∅ ∩ M = ∅, que nunca es ≠ ∅.</p>
+      <p>Por lo tanto, ningún conjunto M que contenga p puede ser modelo del programa. En particular, ningún answer set (que es un modelo minimal) puede contener p. ∎</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">ASP-8</span><span class="dif-badge">Intermedio</span><span class="source-badge">Guía ASP Ej.8</span></div>
+  <p>Demuestra que si el programa contiene la regla <code>{} :- {}</code> (constraint siempre activo), no tiene ningún answer set. ¿Puede tener modelos?</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>La regla <code>{} :- {}</code> tiene body = ∅ ⊆ M para todo M (siempre activa) y Head = ∅. Para ser modelo se necesitaría ∅ ∩ M ≠ ∅, lo cual es falso para cualquier M.</p>
+      <p><strong>No tiene modelos</strong> (ni siquiera el conjunto vacío lo es, porque ∅ ∩ ∅ = ∅, nunca ≠ ∅).</p>
+      <p>Como no tiene ningún modelo, en particular no tiene ningún modelo minimal → <strong>no tiene answer sets</strong>.</p>
+      <p><strong>¿Puede tener modelos?</strong> No. La constraint viola la definición de modelo para absolutamente todo conjunto M. En Clingo, esto se representa como <code>:- .</code> (body vacío, sin cuerpo) y hace que el programa sea insatisfactible (UNSATISFIABLE).</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">ASP-9</span><span class="dif-badge">Difícil</span><span class="source-badge">Guía ASP Ej.9</span></div>
+  <p>Supón que Π tiene múltiples modelos minimales. Compara los modelos minimales de Π∪{:-p, q} versus Π∪{:-p}∪{:-q}.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Π∪{:-p, q}</strong>: La constraint es <code>{} :- {p,q}</code>. Body={p,q}. Se activa solo si p∈M <em>y</em> q∈M simultáneamente. Elimina los modelos minimales de Π que contienen AMBOS p y q.</p>
+      <p><strong>Π∪{:-p}∪{:-q}</strong>: Dos constraints separadas. <code>{} :- {p}</code> elimina modelos con p. <code>{} :- {q}</code> elimina modelos con q. Elimina los modelos que contienen p (aunque no tengan q) y los que contienen q (aunque no tengan p).</p>
+      <p><strong>Diferencia:</strong> Π∪{:-p, q} solo bloquea modelos con p∧q. Π∪{:-p}∪{:-q} bloquea modelos con p, y también modelos con q. Es mucho más restrictivo: p Y q están prohibidos cada uno individualmente.</p>
+      <p>Ejemplo: si M={p,r} es modelo minimal de Π, Π∪{:-p,q} lo conserva (p∈M pero q∉M). Π∪{:-p}∪{:-q} lo elimina (porque p∈M).</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">ASP-10</span><span class="dif-badge">Difícil</span><span class="source-badge">Guía ASP Ej.10</span></div>
+  <p>(a) Encuentra un programa de 1 regla con 4 modelos. (b) Describe un programa con 2ⁿ modelos.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>(a) 1 regla con 4 answer sets:</strong></p>
+      <pre><code>p; q; r; s :- .</code></pre>
+      <p>Body vacío → siempre activa. Head={p,q,r,s}. Necesita al menos uno en M. Modelos minimales: {p}, {q}, {r}, {s}. Son 4 answer sets.</p>
+      <p><strong>Con 2 reglas:</strong></p>
+      <pre><code>p; q.
+r; s.</code></pre>
+      <p>Cada regla tiene 2 answer sets independientes: {p} o {q}; {r} o {s}. Combinando: {p,r}, {p,s}, {q,r}, {q,s} = 4 answer sets.</p>
+      <p><strong>(b) Programa con 2ⁿ answer sets:</strong></p>
+      <pre><code>p1; q1.
+p2; q2.
+...
+pn; qn.</code></pre>
+      <p>n reglas disyuntivas independientes. Cada una aporta factor 2. Total: 2ⁿ answer sets. Cada answer set elige exactamente uno de {pᵢ, qᵢ} para cada i.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">ASP-11</span><span class="dif-badge">Difícil</span><span class="source-badge">Guía ASP Ej.11</span></div>
+  <p>Para el programa de Horn:</p>
+  <pre><code>p1 :- p2, p3.
+p2 :- p3, p4.
+...
+p8 :- p9, p10.</code></pre>
+  <p>(a) Muestra la ejecución del algoritmo de modelo minimal para Π∪{p5} y Π∪{p5, p6}.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>Algoritmo (forward chaining):</strong> Inicializar M = hechos. Repetir: si existe regla con Body⊆M y Head∩M=∅, agregar Head a M. Hasta que no cambie M.</p>
+      <p><strong>Para Π (sin hechos):</strong> M = {} → ninguna regla se activa (ningún Body está en ∅) → M = {}. Answer set = {∅}... pero {} es modelo minimal trivial. Las reglas nunca se disparan si no hay hechos iniciales.</p>
+      <p><strong>Para Π∪{p5}:</strong> M = {p5}.</p>
+      <ul>
+        <li>Reglas con body ⊆ {p5}: ninguna (todas necesitan 2 átomos).</li>
+        <li>M final = <strong>{p5}</strong></li>
+      </ul>
+      <p><strong>Para Π∪{p5, p6}:</strong> M = {p5, p6}.</p>
+      <ul>
+        <li><code>p4 :- p5, p6</code>: {p5,p6} ⊆ M → agregar p4. M={p5,p6,p4}.</li>
+        <li><code>p3 :- p4, p5</code>: {p4,p5} ⊆ M → agregar p3. M={p5,p6,p4,p3}.</li>
+        <li><code>p2 :- p3, p4</code>: {p3,p4} ⊆ M → agregar p2. M={p5,p6,p4,p3,p2}.</li>
+        <li><code>p1 :- p2, p3</code>: {p2,p3} ⊆ M → agregar p1. M={p5,p6,p4,p3,p2,p1}.</li>
+        <li>No más reglas activas. M final = <strong>{p1,p2,p3,p4,p5,p6}</strong>.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">ASP-12</span><span class="dif-badge">Difícil</span><span class="source-badge">Guía ASP Ej.12</span></div>
+  <p>Dado el programa:</p>
+  <pre><code>progenitor(a,b). progenitor(b,c). progenitor(c,d).
+abuelo(X,Y) :- progenitor(X,Z), progenitor(Z,Y).</code></pre>
+  <p>(a) ¿Cuántas reglas tiene el programa instanciado? (b) Agrega reglas para hermano, primo_hermano, nieto. (c) Explica la diferencia entre las 2 versiones de clausura transitiva.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>(a) Instanciación:</strong> Constantes = {a,b,c,d}. La regla <code>abuelo(X,Y) :- progenitor(X,Z), progenitor(Z,Y)</code> instancia todas las combinaciones X,Y,Z ∈ {a,b,c,d}³ = 4³ = 64 instancias. Más los 3 hechos. Total = 67 reglas en el programa instanciado.</p>
+      <p>Con n hechos y m constantes: O(m³) reglas instanciadas para la regla de abuelo.</p>
+      <p><strong>(b) Relaciones adicionales:</strong></p>
+      <pre><code>nieto(X,Y) :- progenitor(Y,Z), progenitor(Z,X).
+hermano(X,Y) :- progenitor(Z,X), progenitor(Z,Y), X != Y.
+primo_hermano(X,Y) :- progenitor(Px,X), progenitor(Py,Y),
+                       hermano(Px,Py), X != Y.</code></pre>
+      <p><strong>(c) Clausura transitiva:</strong></p>
+      <p><strong>Versión 1</strong>: <code>alcanzable(X,Y) :- alcanzable(X,Z), alcanzable(Z,Y)</code> — usa alcanzable en el body. Cuando se instancia, puede generar muchas más reglas: todas las combinaciones de pares alcanzables × alcanzables. Puede generar el mismo hecho por múltiples caminos.</p>
+      <p><strong>Versión 2</strong>: <code>alcanzable(X,Y) :- vuelo(X,Z), alcanzable(Z,Y)</code> — siempre "avanza" al menos un vuelo. El programa instanciado es más pequeño (solo vuelo×alcanzable, no alcanzable×alcanzable). Ambos computan la misma clausura transitiva, pero la Versión 2 tiene menos reglas instanciadas.</p>
+      <p>Los modelos minimales son iguales en ambas versiones (misma extensión de alcanzable).</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-title" id="asp-intermedio">Ejercicios ASP — Intermedio (Negación y Reducción)</h2>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">ASP-13</span><span class="dif-badge">Intermedio</span></div>
+  <p><strong>Negación por defecto:</strong> ¿Cuántos answer sets tiene este programa?</p>
+  <pre><code>p :- not q.
+q :- not p.</code></pre>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Candidatos: {p}, {q}, {p,q}, {}.</p>
+      <p><strong>Verificamos {p} con reducción ΠX={p}:</strong></p>
+      <ul>
+        <li>Regla 1: <code>p :- not q</code>. q ∉ {p} → eliminar "not q" → <code>p :- .</code></li>
+        <li>Regla 2: <code>q :- not p</code>. p ∈ {p} → eliminar regla.</li>
+      </ul>
+      <p>Π{p} = {p :- .}. Modelo minimal de Π{p} = {p}. {p} = X ✓ → <strong>{p} es answer set</strong>.</p>
+      <p><strong>Verificamos {q} con reducción ΠX={q}:</strong></p>
+      <ul>
+        <li>Regla 1: q ∈ {q} → eliminar regla 1.</li>
+        <li>Regla 2: p ∉ {q} → eliminar "not p" → <code>q :- .</code></li>
+      </ul>
+      <p>Π{q} = {q :- .}. Modelo minimal = {q} = X ✓ → <strong>{q} es answer set</strong>.</p>
+      <p><strong>Verificamos {} con Π{}:</strong></p>
+      <ul>
+        <li>Regla 1: q ∉ {} → <code>p :- .</code></li>
+        <li>Regla 2: p ∉ {} → <code>q :- .</code></li>
+      </ul>
+      <p>Π{} = {p:-., q:-.}. Modelo minimal = {p,q} ≠ {} → <strong>{} no es answer set</strong>.</p>
+      <p><strong>Exactamente 2 answer sets: {p} y {q}</strong>.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio medio">
+  <div class="ej-header"><span class="ej-num">ASP-14</span><span class="dif-badge">Intermedio</span><span class="source-badge">Prueba 2025 Q1b</span></div>
+  <p>Del examen 2025. Encuentra los answer sets del programa:</p>
+  <pre><code>p :- not q.
+q :- not p.</code></pre>
+  <p>Usando reducción para verificar cada candidato. (Este es el ejercicio 1b de la prueba 2025.)</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Resuelto en ASP-13. Answer sets: <strong>{p} y {q}</strong>.</p>
+      <p>Intuición: el programa dice "p si no q" y "q si no p". Son mutuamente excluyentes. Clingo elegirá uno de los dos en distintos modelos.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio dificil">
+  <div class="ej-header"><span class="ej-num">ASP-15</span><span class="dif-badge">Difícil</span><span class="source-badge">Prueba 2024 Q1</span></div>
+  <p>Del examen 2024. ¿Cuántos answer sets tiene este programa? Justifica.</p>
+  <pre><code>a; b; c.
+:- a, b.
+:- b, c.</code></pre>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Regla 1 (disyuntiva): necesita a∈M o b∈M o c∈M. Body vacío → siempre activa.</p>
+      <p>Constraint 1: no puede haber a∧b simultáneamente.</p>
+      <p>Constraint 2: no puede haber b∧c simultáneamente.</p>
+      <p>Modelos minimales de la regla 1 (sin constraints): {a}, {b}, {c}.</p>
+      <p>Aplicamos constraints:</p>
+      <ul>
+        <li>{a}: sin a∧b, sin b∧c. ✓ — <strong>answer set</strong></li>
+        <li>{b}: sin a∧b ✓, sin b∧c ✓ — <strong>answer set</strong></li>
+        <li>{c}: sin a∧b ✓, sin b∧c ✓ — <strong>answer set</strong></li>
+      </ul>
+      <p>¿Hay modelos con 2 átomos? {a,c}: regla1✓, constraint1 (a∧b? No)✓, constraint2 (b∧c? No)✓. Es modelo, pero {a}⊊{a,c} también es modelo → no minimal.</p>
+      <p><strong>Exactamente 3 answer sets: {a}, {b}, {c}</strong>.</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-title" id="asp-examen">Ejercicios ASP — Nivel Examen (Programación)</h2>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">ASP-16</span><span class="dif-badge">Nivel Examen</span><span class="source-badge">Prueba 2025 Q1a</span></div>
+  <p><strong>Robot Ania con plumones (Prueba 2025).</strong> Ania tiene 3 plumones (p1,p2,p3), cada uno de color rojo o azul (no negro). Escribe un programa Clingo que modele esto con cardinality constraints.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <pre><code><span class="cm">% Hechos</span>
+plumon(p1). plumon(p2). plumon(p3).
+color(rojo). color(azul).
+
+<span class="cm">% Cada plumon es exactamente rojo O azul (no negro)</span>
+1{de_color(P,rojo); de_color(P,azul)}1 :- plumon(P).
+
+<span class="cm">% Show</span>
+#show de_color/2.</code></pre>
+      <p>Este programa tiene 2³ = 8 answer sets (cada plumon puede ser rojo o azul independientemente).</p>
+      <p><strong>Si el sensor detecta que p1 es azul</strong>, se agrega el hecho <code>de_color(p1,azul).</code> y se elimina la constraint para p1 (o se fuerza con un constraint: <code>:- de_color(p1,rojo).</code>). Quedan 2² = 4 answer sets.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">ASP-17</span><span class="dif-badge">Nivel Examen</span><span class="source-badge">Prueba 2025 Q2</span></div>
+  <p><strong>Asignación de equipos (Prueba 2025).</strong> Hay estudiantes y equipos. Cada estudiante debe asignarse a exactamente 1 equipo. Restricciones: no pueden estar en el mismo equipo 2 estudiantes de la misma escuela, máximo 1 mujer por equipo, máximo 6 personas por equipo. Minimizar equipos de 1 sola persona.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <pre><code><span class="cm">% Hechos (datos del problema)</span>
+id_estudiante(1). id_estudiante(2). <span class="cm">% ... etc</span>
+id_equipo(eq1). id_equipo(eq2). <span class="cm">% ... etc</span>
+escuela(1, ing). escuela(2, letras). <span class="cm">% estudiante, escuela</span>
+mujer(3).  <span class="cm">% estudiante 3 es mujer</span>
+
+<span class="cm">% Asignación: cada estudiante a exactamente 1 equipo</span>
+1{asignado(Est,Eq) : id_equipo(Eq)}1 :- id_estudiante(Est).
+
+<span class="cm">% Constraint: no 2 estudiantes de la misma escuela en el mismo equipo</span>
+:- asignado(E1,Eq), asignado(E2,Eq), E1 != E2,
+   escuela(E1,Esc), escuela(E2,Esc).
+
+<span class="cm">% Constraint: máximo 1 mujer por equipo</span>
+:- asignado(M1,Eq), asignado(M2,Eq), M1 != M2,
+   mujer(M1), mujer(M2).
+
+<span class="cm">% Constraint: máximo 6 personas por equipo</span>
+:- #count{Est : asignado(Est,Eq)} > 6, id_equipo(Eq).
+
+<span class="cm">% Minimizar equipos con solo 1 persona (equipos "mono")</span>
+equipo_mono(Eq) :- id_equipo(Eq),
+                   #count{Est : asignado(Est,Eq)} = 1.
+#minimize{1,Eq : equipo_mono(Eq)}.
+
+#show asignado/2.</code></pre>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">ASP-18</span><span class="dif-badge">Nivel Examen</span><span class="source-badge">Prueba 2024 Q3</span></div>
+  <p><strong>Robot planificador (Prueba 2024).</strong> Un robot debe planificar una secuencia de acciones para recoger y mover objetos. Escribe reglas Clingo para: (a) ejecutar acción solo si precondiciones se cumplen, (b) persistencia de fluentes, (c) frame problem.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <pre><code><span class="cm">% Dominio: robot, objetos, posiciones, pasos</span>
+paso(0..T) :- horizonte(T).
+objeto(obj1). objeto(obj2).
+posicion(p1). posicion(p2). posicion(p3).
+
+<span class="cm">% Estado inicial</span>
+en(robot, p1, 0).
+en(obj1, p2, 0).
+en(obj2, p3, 0).
+
+<span class="cm">% Acciones posibles (generar plan)</span>
+0{exec(mover(robot,P), T)}1 :- paso(T), posicion(P), T < TMax.
+0{exec(recoger(robot,Obj), T)}1 :- paso(T), objeto(Obj).
+
+<span class="cm">% (a) Precondiciones: mover solo si robot está en origen</span>
+:- exec(mover(robot,Dest), T), 
+   not en(robot, _, T).  <span class="cm">% debe estar en algún lugar</span>
+:- exec(recoger(robot,Obj), T),
+   en(robot, P, T), not en(Obj, P, T).  <span class="cm">% obj debe estar aquí</span>
+
+<span class="cm">% (b) Efectos de acciones</span>
+en(robot, Dest, T+1) :- exec(mover(robot,Dest), T).
+tiene(robot, Obj, T+1) :- exec(recoger(robot,Obj), T).
+
+<span class="cm">% (c) Persistencia (frame problem): lo que no cambia, permanece</span>
+en(X, P, T+1) :- en(X, P, T), 
+                  not exec(mover(X, _), T),
+                  paso(T).
+tiene(robot, Obj, T+1) :- tiene(robot, Obj, T),
+                           not exec(soltar(robot,Obj), T),
+                           paso(T).
+
+<span class="cm">% Goal: robot en p3 con obj1</span>
+:- horizonte(T), not en(robot, p3, T).
+:- horizonte(T), not tiene(robot, obj1, T).</code></pre>
+      <p>La clave es la persistencia: en ASP, lo que no se afirma explícitamente como cambiado, se mantiene igual (frame axioms).</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">ASP-19</span><span class="dif-badge">Nivel Examen</span><span class="source-badge">Guía ASP Ej.13</span></div>
+  <p><strong>Circuito digital con componentes defectuosas.</strong> Basado en el circuito de la Guía Ejercicios ASP:</p>
+  <p>(a) Escribe las reglas para deducir valores cuando las componentes son normales. (b) Escribe las reglas para componentes defectuosas. El circuito tiene: xor1(i1,i2→t1), xor2(t1,i3→o1), and1(i1,i2→t2), and2(t2,i3→t3), or1(t2,t3→o2).</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <pre><code><span class="cm">% Tablas de verdad (del programa base)</span>
+salida(xor,0,0,0). salida(xor,0,1,1). salida(xor,1,0,1). salida(xor,1,1,0).
+salida(or,0,0,0). salida(or,0,1,1). salida(or,1,0,1). salida(or,1,1,1).
+salida(and,0,0,0). salida(and,0,1,0). salida(and,1,0,0). salida(and,1,1,1).
+
+<span class="cm">% Cables y componentes</span>
+cable(i1). cable(i2). cable(i3). cable(t1). cable(t2). cable(t3).
+cable(o1). cable(o2).
+componente(xor1). componente(xor2). componente(and1). componente(and2). componente(or1).
+
+<span class="cm">% (a) Reglas para componentes NO defectuosas (5 reglas)</span>
+val(t1,Z) :- val(i1,X), val(i2,Y), salida(xor,X,Y,Z), nodefectuosa(xor1).
+val(o1,Z) :- val(t1,X), val(i3,Y), salida(xor,X,Y,Z), nodefectuosa(xor2).
+val(t2,Z) :- val(i1,X), val(i2,Y), salida(and,X,Y,Z), nodefectuosa(and1).
+val(t3,Z) :- val(t2,X), val(i3,Y), salida(and,X,Y,Z), nodefectuosa(and2).
+val(o2,Z) :- val(t2,X), val(t3,Y), salida(or,X,Y,Z),  nodefectuosa(or1).
+
+<span class="cm">% (b) Reglas para componentes DEFECTUOSAS: cualquier salida es posible</span>
+val(t1,0) :- defectuosa(xor1). val(t1,1) :- defectuosa(xor1).
+val(o1,0) :- defectuosa(xor2). val(o1,1) :- defectuosa(xor2).
+val(t2,0) :- defectuosa(and1). val(t2,1) :- defectuosa(and1).
+val(t3,0) :- defectuosa(and2). val(t3,1) :- defectuosa(and2).
+val(o2,0) :- defectuosa(or1).  val(o2,1) :- defectuosa(or1).
+
+<span class="cm">% Cada componente es defectuosa o no defectuosa (diagnóstico)</span>
+1{nodefectuosa(M); defectuosa(M)}1 :- componente(M).</code></pre>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">ASP-20</span><span class="dif-badge">Nivel Examen</span></div>
+  <p><strong>Coloreo de grafo (problema clásico de combinatoria).</strong> Escribe un programa Clingo para colorear un grafo con K colores de tal forma que ningún par de nodos adyacentes tenga el mismo color. Minimiza el número de colores usados.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <pre><code><span class="cm">% Datos del grafo (ejemplo)</span>
+nodo(1..4).
+arista(1,2). arista(1,3). arista(2,3). arista(3,4).
+color(rojo). color(azul). color(verde).
+
+<span class="cm">% Asignación: cada nodo recibe exactamente 1 color</span>
+1{asignado(N,C) : color(C)}1 :- nodo(N).
+
+<span class="cm">% Constraint: nodos adyacentes no pueden tener el mismo color</span>
+:- asignado(N1,C), asignado(N2,C), arista(N1,N2).
+
+<span class="cm">% (Opcional) Minimizar colores usados</span>
+color_usado(C) :- asignado(_,C).
+#minimize{1,C : color_usado(C)}.
+
+#show asignado/2.</code></pre>
+      <p>Este es un patrón común en exámenes: genera-y-filtra. (1) Generar todas las asignaciones posibles con cardinality constraint. (2) Filtrar con constraints las que violan restricciones. (3) Opcionalmente optimizar.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">ASP-21</span><span class="dif-badge">Nivel Examen</span><span class="source-badge">Prueba 2024 Q2</span></div>
+  <p><strong>Programa con negación — contar modelos (Prueba 2024).</strong> Analiza cuántos answer sets tiene:</p>
+  <pre><code>a :- not b.
+b :- not a.
+c :- a.
+c :- b.</code></pre>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p>Las primeras 2 reglas son el patrón clásico: 2 answer sets posibles para {a,b}: {a} o {b}.</p>
+      <p><strong>Candidato X={a,c}:</strong> Π{a,c}: regla 1: b∉{a,c}→<code>a:-.</code>; regla 2: a∈{a,c}→eliminar; regla 3: <code>c:-a.</code>; regla 4: <code>c:-b.</code> (b no está pero la regla se mantiene sin negación). Π{a,c} = {a:-., c:-a., c:-b.}. Modelo minimal: a→c. = {a,c}. ✓ <strong>answer set</strong>.</p>
+      <p><strong>Candidato X={b,c}:</strong> Simétrico. Π{b,c} = {b:-., c:-a., c:-b.}. Modelo minimal: {b,c}. ✓ <strong>answer set</strong>.</p>
+      <p><strong>2 answer sets: {a,c} y {b,c}</strong>. En ambos c está presente porque c se deduce siempre (sea a o b).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= REPASO FINAL ============================= -->
+<h2 class="section-title" id="repaso">🎯 Repaso Final — Simulacro de Examen</h2>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">EXAM-1</span><span class="dif-badge">Nivel Examen</span></div>
+  <p><strong>Pregunta mixta (30 min).</strong> Responde brevemente:</p>
+  <ol type="a">
+    <li>¿Qué diferencia hay entre Margin Sampling y Entropy Sampling? ¿Cuándo coinciden?</li>
+    <li>En Q-learning, si α=0, ¿qué pasa? Si α=1, ¿qué pasa?</li>
+    <li>Una imagen RGB de 64×64 pasa por una capa conv de 32 filtros 3×3, stride=2, padding=1. ¿Cuál es la dimensión de salida? ¿Cuántos parámetros?</li>
+    <li>¿Puede un programa ASP no tener answer sets? Da un ejemplo.</li>
+  </ol>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>(a)</strong> Margin Sampling: diferencia entre 1ª y 2ª clase más probable. Entropy Sampling: entropía completa de toda la distribución. Entropy captura incertidumbre sobre todas las clases; Margin solo las 2 principales. Coinciden en clasificación binaria (donde margin y entropy son funciones monótonas entre sí).</p>
+      <p><strong>(b)</strong> α=0: Q(s,a) nunca se actualiza (ignora la experiencia). El agente no aprende nada. α=1: Q(s,a) se reemplaza completamente por el target en cada step. Muy reactivo al ruido, puede oscilar.</p>
+      <p><strong>(c)</strong> H_out = (64-3+2·1)/2 + 1 = (63)/2 + 1 = 31.5 + 1... espera: (64-3+2)/2 + 1 = 63/2 + 1 = 32.5, pero debe ser entero → H_out = 32. W_out = 32. Canales = 32. <strong>Salida: 32×32×32</strong>. Parámetros: 3×3×3×32 + 32 = 864 + 32 = <strong>896</strong>.</p>
+      <p><strong>(d)</strong> Sí. Ejemplo: <code>:- .</code> (constraint con body vacío → ningún modelo es válido). O: <code>p :- p.</code> combinado con <code>:- not p.</code> — fuerza p pero <code>p:-p</code> solo se satisface si p ya está (circular, no produce p desde nada). Con el constraint <code>:- not p</code>, ningún modelo sin p es válido, y p no se puede derivar → UNSATISFIABLE.</p>
+    </div>
+  </div>
+</div>
+
+<div class="ejercicio examen">
+  <div class="ej-header"><span class="ej-num">EXAM-2</span><span class="dif-badge">Nivel Examen</span></div>
+  <p><strong>CNN completo con cálculos.</strong> Arquitectura para clasificar imágenes 32×32 RGB en 10 clases:</p>
+  <ol>
+    <li>Conv: 16 filtros 3×3, stride=1, padding=1, + ReLU</li>
+    <li>MaxPool 2×2 stride=2</li>
+    <li>Conv: 32 filtros 3×3, stride=1, padding=0, + ReLU</li>
+    <li>MaxPool 2×2 stride=2</li>
+    <li>Flatten → FC(10) + Softmax</li>
+  </ol>
+  <p>Calcula: (a) dimensiones después de cada capa, (b) total de parámetros, (c) pérdida si logits=[3,1,0,...] y clase correcta=0.</p>
+  <div class="solucion">
+    <button class="sol-toggle" onclick="toggle(this)">▶ Ver solución</button>
+    <div class="sol-body">
+      <p><strong>(a) Dimensiones:</strong></p>
+      <table>
+        <tr><th>Capa</th><th>Fórmula</th><th>Salida</th></tr>
+        <tr><td>Input</td><td>—</td><td>32×32×3</td></tr>
+        <tr><td>Conv1 (16, 3×3, P=1, S=1)</td><td>(32-3+2)/1+1=32</td><td>32×32×16</td></tr>
+        <tr><td>MaxPool 2×2 S=2</td><td>(32-2)/2+1=16</td><td>16×16×16</td></tr>
+        <tr><td>Conv2 (32, 3×3, P=0, S=1)</td><td>(16-3)/1+1=14</td><td>14×14×32</td></tr>
+        <tr><td>MaxPool 2×2 S=2</td><td>(14-2)/2+1=7</td><td>7×7×32</td></tr>
+        <tr><td>Flatten</td><td>7×7×32=1568</td><td>1568</td></tr>
+        <tr><td>FC(10)</td><td>1568→10</td><td>10</td></tr>
+      </table>
+      <p><strong>(b) Parámetros:</strong></p>
+      <ul>
+        <li>Conv1: 3×3×3×16+16 = 432+16 = 448</li>
+        <li>MaxPool: 0</li>
+        <li>Conv2: 3×3×16×32+32 = 4608+32 = 4640</li>
+        <li>MaxPool: 0</li>
+        <li>FC: 1568×10+10 = 15690</li>
+        <li><strong>Total: 20,778 parámetros</strong></li>
+      </ul>
+      <p><strong>(c) Pérdida:</strong> Softmax sobre z=[3,1,0,0,...,0] (10 valores, 9 ceros más):<br>
+      e³≈20.09, e¹≈2.72, e⁰=1 (×8). Suma ≈ 20.09+2.72+8 = 30.81.<br>
+      P(c0) = 20.09/30.81 ≈ 0.652.<br>
+      CE = -log(0.652) ≈ <strong>0.428</strong></p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function toggle(btn) {
+  const body = btn.nextElementSibling;
+  body.classList.toggle('open');
+  btn.textContent = body.classList.contains('open') ? '▼ Ocultar solución' : '▶ Ver solución';
+}
+
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
